@@ -19,6 +19,6 @@ public class NoticeServiceImp extends ServiceImpl<NoticeMapper, Notice> implemen
     // 获取最新的公告
     @Override
     public Notice getLatestNotice() {
-        return mapper.selectOne(new QueryWrapper<Notice>().orderByDesc("create_time").last("limit 1"));
+        return mapper.selectOne(new QueryWrapper<Notice>().orderByDesc("create_time", "id").last("limit 1"));
     }
 }

@@ -29,7 +29,7 @@ public class Message {
     @TableField(fill = FieldFill.INSERT ,value = "create_time")
     private LocalDateTime createTime;
 
-    // 父级关系通过实际外键列保存，回复集合不参与单表 SQL。
+    // 父级关系通过普通 ID 字段保存，回复集合不参与单表 SQL。
     @TableField("parent_message_id")
     private Long parentMessageId;
 

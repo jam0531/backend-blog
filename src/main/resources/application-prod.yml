@@ -1,0 +1,26 @@
+# 同源 HTTPS 反向代理部署；凭据仅通过部署环境提供。
+server:
+  address: ${BLOG_BIND_ADDRESS:127.0.0.1}
+  port: ${BLOG_PORT:18080}
+  forward-headers-strategy: framework
+  servlet:
+    session:
+      cookie:
+        secure: true
+        http-only: true
+        same-site: lax
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${BLOG_DB_URL}
+    username: ${BLOG_DB_USERNAME}
+    password: ${BLOG_DB_PASSWORD}
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    root: info
+    com.zhj.blog.Mapper.UserMapper: WARN

@@ -1,3 +1,16 @@
+server:
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: lax
+
+# 登录查询会读取旧密码摘要，禁止将账号查询结果写入调试日志。
+logging:
+  level:
+    com.zhj.blog.Mapper.UserMapper: WARN
+
 spring:
   profiles:
     default: dev

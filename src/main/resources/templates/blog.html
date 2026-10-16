@@ -250,7 +250,7 @@
                   <div class="item">
                     <time datetime="2021-11-25">
                       <i class="calendar alternate outline icon"></i>
-                      <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-11-25</span>
+                      <span th:text="${#temporals.format(blog.updateTime,'yyyy-MM-dd')}">2021-11-25</span>
                     </time>
                   </div>
                   <div class="item">
@@ -265,7 +265,7 @@
                   </div>      
                   <div class="item">
                     <i class="comment alternate outline icon"></i>
-                    <span th:text="${#arrays.length(commentArray)}">1000</span>
+                    <span th:text="${commentArray == null ? 0 : #arrays.length(commentArray)}">1000</span>
                   </div>
                   <div class="item" th:each="tag : ${blog.tags}">
                     <i class="tag icon"></i>
@@ -311,7 +311,7 @@
                             <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${comment.adminComment}">博主</div>
                           </a>
                           <div class="metadata">
-                            <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                            <span class="date" th:text="${#temporals.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                           </div>
                           <div class="text" th:utext="${comment.content}">
                             How artistic!
@@ -332,7 +332,7 @@
                                 &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
                               </a>
                               <div class="metadata">
-                                <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                                <span class="date" th:text="${#temporals.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                               </div>
                               <div class="text" th:utext="${reply.content}">
                                 How artistic!

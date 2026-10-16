@@ -4,10 +4,12 @@ import com.zhj.blog.Dto.ApiResponse;
 import com.zhj.blog.Dto.PageResult;
 import com.zhj.blog.Dto.blog.BlogSummaryDto;
 import com.zhj.blog.Dto.blog.BlogDetailDto;
+import com.zhj.blog.Dto.blog.BlogQuery;
+import javax.validation.Valid;
 import com.zhj.blog.Service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,9 +24,7 @@ public class BlogApiController {
     }
 
     @GetMapping("/api/blogs")
-    public ApiResponse<PageResult<BlogSummaryDto>> blogs(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ApiResponse.success(blogService.getPublicBlogPage(page, size));
+    public ApiResponse<PageResult<BlogSummaryDto>> blogs(@Valid @ModelAttribute BlogQuery query) {
+        return ApiResponse.success(blogService.getPublicBlogPage(query));
     }
 }

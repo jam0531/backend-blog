@@ -15,11 +15,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /** 只处理新 API；返回固定错误文案，不把 SQL、异常堆栈或请求内容暴露给客户端。 */
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 @RestControllerAdvice(basePackages = "com.zhj.blog.Controller.api")
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiResponse<Void>> badRequest(IllegalArgumentException exception) {
+    @org.springframework.web.bind.annotation.ExceptionHandler({IllegalArgumentException.class, javax.validation.ConstraintViolationException.class})
+    public ResponseEntity<ApiResponse<Void>> badRequest(Exception exception) {
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON)
                 .body(ApiResponse.error(400, "请求参数不合法"));
     }

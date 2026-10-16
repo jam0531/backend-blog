@@ -366,8 +366,8 @@
                             </div>
                         </div>
                         <div class="ui basic segment" align="center" id="pagination">
-                            <div class="ui pagination menu" th:if="${page.totalPages}>1">
-                                <a class="item" th:text="${i}" id="page-btn" th:attr="data-page=${i}-1" onclick="page(this)" th:each="i : ${#numbers.sequence(1,page.totalPages)}">
+                            <div class="ui pagination menu" th:if="${page.pages}>1">
+                                <a class="item" th:text="${i}" id="page-btn" th:attr="data-page=${i}" onclick="page(this)" th:each="i : ${#numbers.sequence(1,page.pages)}">
                                   1
                                 </a>
                             </div>
@@ -1037,7 +1037,7 @@
 
           function loaddata(){
               $('#right-bar').load(/*[[@{/publishBlogs}]]*/"/publishBlogs" ,{
-                  page : $("[name = 'page']").val(),
+                  current : $("[name = 'page']").val(),
               });
           }
      </script>

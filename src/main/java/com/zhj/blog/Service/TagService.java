@@ -10,5 +10,6 @@ import java.util.List;
  * @date:2022/7/10 15:20
  **/
 public interface TagService extends IService<Tag> {
+    void deleteForAdmin(Long id);
     List<Tag> TopTagList(Integer size);
 }

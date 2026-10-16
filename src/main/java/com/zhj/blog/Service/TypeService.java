@@ -10,6 +10,7 @@ import java.util.List;
  * @date:2022/7/10 15:20
  **/
 public interface TypeService extends IService<Type> {
+    void deleteForAdmin(Long id);
     // 获取
     List<Type> TypeTopList(Integer size);
 }

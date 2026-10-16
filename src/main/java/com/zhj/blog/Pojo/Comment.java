@@ -27,7 +27,7 @@ public class Comment {
     @TableField(fill = FieldFill.INSERT ,value = "create_time")
     private LocalDateTime createTime;
 
-    // 持久化使用外键 ID，对象字段仅用于页面展示。
+    // 通过普通 ID 字段关联文章，不使用数据库外键约束。
     @TableField("blog_id")
     private Long blogId;
 

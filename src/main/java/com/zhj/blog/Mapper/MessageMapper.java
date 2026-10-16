@@ -13,4 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface MessageMapper extends BaseMapper<Message> {
+    /** 同一留言树的回复与删除锁定根记录，避免删除后又产生孤立回复。 */
+    @org.apache.ibatis.annotations.Select("SELECT * FROM message WHERE id = #{id} FOR UPDATE")
+    Message lockById(@org.apache.ibatis.annotations.Param("id") Long id);
 }
