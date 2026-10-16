@@ -1,0 +1,6 @@
+#page-header.header-image{
+  background-attachment: fixed;
+  background-image: url("../images/pic1.png");
+  height: 70vh;
+  width: 100%;
+}

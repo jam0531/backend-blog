@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="十二的个人博客, 友链链接展示">
+    <meta name="keyword" content="十二, 友链链接">
+    <meta name="author" content="十二, Alex">
+    <title>友链</title>
+
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}"> 
+    <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}"> 
+    <link rel="stylesheet" href="../static/css/footer.css" th:href="@{/css/footer.css}"> 
+    <link rel="stylesheet" href="../static/css/header.css" th:href="@{/css/header.css}"> 
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../static/css/friend-links.css" th:href="@{/css/friend-links.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+    <script src="../static/lib/qqFace/jquery.qqFace.js" th:src="@{/lib/qqFace/jquery.qqFace.js}"></script>
+
+  </head>
+
+  <body>
+    <!-- 移动端的侧边栏 -->
+    <div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+      <div class="item" align="center">
+        <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+      </div>
+      <div class="item attached">
+        <div class="mobile_post_data">
+          <div class="mobile_data_item is-center">
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Articles</div>
+                <div class="length_num">10</div>
+              </a>
+            </div>
+          </div>
+          
+          <div class="mobile_data_item is-center">      
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Tags</div>
+                <div class="length_num">2</div>
+              </a>
+            </div>
+          </div>
+          
+          <div class="mobile_data_item is-center">     
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Categories</div>
+                <div class="length_num">6</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="item site-icon" href="home.html">
+        <span><i class="home icon"></i>首页</span>
+      </a>
+      <a class="item site-icon" href="archive.html">
+        <span><i class="box icon"></i>归档</span>
+      </a>
+      <a class="item site-icon" href="types.html">
+        <span><i class="tags icon"></i>分类</span>
+      </a>
+      <a class="item site-icon" href="message.html">
+        <span><i class="comment icon"></i>留言</span>
+      </a>
+      <a class="item site-icon" href="friend-links.html">
+        <span><i class="user plus icon"></i>友链</span>
+      </a>
+      <a href="about.html" class="item site-icon" >
+        <span><i class="user icon"></i>关于 我</span>
+      </a>
+      <a href="aboutWeb.html" class="item site-icon" >
+        <span><i class="laptop icon"></i>关于 网站</span>
+      </a>
+    </div>
+
+    <!--SEARCH-->
+    <div th:replace="fragments :: search" class="ui fullscreen modal" id="search">
+      <i class="large m-white close icon"></i>
+      <div class="ui container">
+        <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+          <div class="ui large search">
+            <div class="ui icon input">
+              <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+              <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+            </div>
+            <div class="results"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div th:replace="fragments :: loading-animate" class="loader-wrapper">
+      <img src="../static/images/loading.gif">
+    </div>
+
+    <div class="pusher">
+      <canvas id="c" style="position: fixed; z-index: -1;"></canvas>
+
+      <div th:replace="fragments :: header(~{::h1})" id="header">
+        <!-- 导航栏 -->
+        <nav class="m-shadow-header" id="nav">
+
+          <div class="ui stackable grid">
+
+            <div class="four wide column" align="center" >
+              <div class="site-top" id="nav-logo">
+                <div class="site-logo">
+                  <span class="site-logo-title m-mobile-site-logo-title">
+                    <a href="home.html" alt="十二" class="">
+                      <span class="sakuraso">十二</span>
+                      <span class="no">の</span>
+                      <span class="shironeko">世界</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="eight wide column m-mobile-hide" align="center">
+              <div id="nav-menu">
+                <div class="ui inverted stackable secondary menu">
+                  <a href="home.html" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                  <a href="archive.html" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+                  <a href="types.html" class="item  shake"><i class="tags icon"></i>分类</a> 
+                  <a href="message.html" class="item pulse"><i class="comment icon"></i>留言</a>
+                  <a href="friend-links.html" class="item  tada"><i class="user plus icon"></i>友链</a> 
+                  <a href="picture.html" class="item  swing"><i class="music icon"></i>音乐</a>
+                  <div class="item">
+                        <div class="ui dropdown">
+                          <div class="text">
+                            关于
+                          </div>
+                          <i class="dropdown icon"></i>
+                          <div class="menu">
+                            <a href="about.html" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>
+                            <a href="aboutWeb.html" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>
+                          </div>
+                        </div>
+                  </div>    
+                  <div class="left item">
+                    <div class="ui dropdown">
+                                      <i class="large search link icon"></i>
+                                      <div class="menu">
+                                        <div class="ui icon search input">
+                                          <i class="search icon"></i>
+                                          <input type="text" placeholder="Search tags...">
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="header">
+                                          <i class="tags icon"></i>
+                                          Tag Label
+                                        </div>
+                                        <div class="scrolling menu">
+                                          <div class="item">
+                                            <div class="ui blue empty circular label"></div>
+                                            Programing
+                                          </div>
+                                          <div class="item">
+                                            <div class="ui teal empty circular label"></div>
+                                            Daily lives
+                                          </div>
+                                          <div class="item">
+                                            <div class="ui orange empty circular label"></div>
+                                            Study
+                                          </div>
+                                          <div class="item">
+                                            <div class="ui violet empty circular label"></div>
+                                            Game
+                                          </div>
+                                          <div class="item">
+                                            <div class="ui red empty circular label"></div>
+                                            pytorch
+                                          </div>
+                                        </div>
+                                      </div>
+                    </div>
+                  </div>   
+                </div>
+              </div>
+            </div>  
+
+            <div class="four wide column m-mobile-hide" align="center">
+              <div id="login">
+                <a href="admin/login.html" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+              </div>
+            </div>
+        </div>
+
+          <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+            <i class="sidebar icon"></i>
+          </a>
+        </nav>
+
+        <header id="page-header" class="header-image">
+          <div id="site-info">
+            <h1  id="site-title">友链</h1>
+            <div id="site-subtitle">
+              <span id="subtitle"></span>
+              <span class="typed-cursor"></span>
+            </div>
+          </div>
+
+          <div class="scroll-down-bar">
+              <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+          </div>
+
+        </header>
+      </div>
+
+      <div id="main">
+
+
+        <div class="ui m-container">
+          <div class="ui segment cube">
+            <div class="ui stackable grid">
+              <div class="left row">
+                <i class="large left quote icon"></i>
+              </div>
+
+              <div class="center row text-shadow" >
+                <span>友人帐</span>
+              </div>
+
+              <div class="right row">
+                <i class="large right quote icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="ui segment friend-box cube">
+            <div id="my-link">
+              <span>🙇‍♂️欢迎各位大佬添加友链( •̀ ω •́ )✧</span>
+              <span>🔸 示例:</span>
+              <span>🔸 Bio: 十二</span>
+              <span>🔸 Motto: 愿始终是少年敢笑敢言</span>
+              <span>🔸 Url: xxxxxxxxxxx</span>
+              <span>🔸 Avatar: xxxxxxxxxxx</span>
+              <span> ❗❗ 以下博客链接按照添加时间排序，会不定期清除失效连接 🤞</span>
+            </div>
+
+            <div class="ui divider"></div>
+
+            <div class="ui stackable grid" style="flex-wrap: wrap;">
+              <div class="col-lg-4 col-md-6 col-sm-12 five wide column card">
+                <a href="" th:href="@{/}" target="_blank">
+                  <div class="card-body">
+                    <div>
+                      <img class="ui image friend-avatar" th:src="@{/images/twelve.jpg}" src="https://w.wallhaven.cc/full/28/wallhaven-281d5y.png" alt="" >
+                    </div>
+                    <div style="position:absolute; top:20%">
+                      <h3 class="card-title link-card-title">十二</h3>
+                      <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12 five wide column card" th:each="friendlink : ${friendlinks}">
+                <a href="" th:href="${friendlink.friendlinkAddress}" target="_blank">
+                  <div class="card-body">
+                    <div>
+                      <img class="ui image friend-avatar" th:src="@{${friendlink.friendlinkAvater}}" src="https://w.wallhaven.cc/full/28/wallhaven-281d5y.png" alt="" >
+                    </div>
+                    <div style="position:absolute; top:20%">
+                      <h3 class="card-title link-card-title" th:text="${friendlink.friendlinkName}">侧栏友链</h3>
+                      <p class="card-text link-card-text" th:text="${friendlink.friendlinkDescription}">其余友链在左下角侧边栏</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+          </div>
+          <div class="ui segment cube" style="padding: 2rem !important;">
+            <div id="comment-container" class="ui basic segment">
+              <div th:fragment="MessageList">
+                <div class="ui comments" style="max-width: 100%;">
+                  <div class="ui dividing header" th:onclick="|toMessage()|"><a style="color: black" id="scroll-To-Message">留言</a></div>
+                  <div class="comment" th:each="message : ${messages}">
+                    <a class="avatar">
+                      <img src="https://unsplash.it/100/100?image=1005" th:src="@{${message.avatar}}">
+                    </a>
+                    <div class="content">
+                      <a class="author" >
+                        <span th:text="${message.nickname}">Matt</span>
+                        <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${message.adminMessage}">博主</div>
+                      </a>
+                      <div class="metadata">
+                        <span class="date" th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                      </div>
+                      <div class="text" th:utext="${message.content}">
+                        How artistic!
+                      </div>
+                      <div class="actions">
+                        <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${message.id},data-messagenickname=${message.nickname}" onclick="reply(this)">回复</a>
+                      </div>
+                    </div>
+                    <div class="comments" th:if="${#arrays.length(message.replyMessages)}>0">
+                      <div class="comment" th:each="reply : ${message.replyMessages}">
+                        <a class="avatar">
+                          <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                        </a>
+                        <div class="content">
+                          <a class="author" >
+                            <span th:text="${reply.nickname}">小红</span>
+                            <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${reply.adminMessage}">博主</div>
+                            &nbsp;<span th:text="|@ ${reply.parentMessage.nickname}|" class="m-teal">@ 小白</span>
+                          </a>
+                          <div class="metadata">
+                            <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                          </div>
+                          <div class="text" th:utext="${reply.content}">
+                            How artistic!
+                          </div>
+                          <div class="actions">
+                            <a class="reply" data-messageid="1" data-messagenickname="Matt" th:attr="data-messageid=${reply.id},data-messagenickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="comment-form" class="ui form">
+              <input type="hidden" name="parentMessage.id" value="-1">
+              <input type="hidden" name="messageType" value="1">
+              <div class="field">
+                <textarea name="content" id="content" placeholder="请输入评论信息..."></textarea>
+              </div>
+              <div class="fields">
+                <div class="field m-mobile-wide m-margin-bottom-small">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.aliasname}">
+                  </div>
+                </div>
+                <div class="field m-mobile-wide m-margin-bottom-small">
+                  <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
+                  </div>
+                </div>
+                <div class="field m-margin-bottom-small m-mobile-wide">
+                  <button type="button" class="ui orange button m-mobile-wide emotion"><i class="heart outline icon"></i>表情</button>
+                </div>
+                <div class="field m-margin-bottom-small m-mobile-wide">
+                  <button id="commentpost-btn" type="button" class="ui blue button m-mobile-wide"><i class="edit icon"></i>发布</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer th:replace="fragments :: footer">
+        <div id="footer"></div>
+          <div class="banner">
+              <div class="view">
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                  class="morning"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                  class="afternoon"
+                />
+                <img
+                  src="../static/images/bilibili-tree/snow.png"
+                  class="ball"
+                />
+                <video autoplay loop muted class="evening">
+                  <source
+                    src="../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                    type="video/webm"
+                  />
+                </video>
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                  class="window-cover"
+                />
+              </div>
+              <div class="tree">
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                  class="morning"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                  class="afternoon"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                  class="evening"
+                />
+              </div>
+          </div>
+      </footer>
+      
+      <div th:replace="fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+
+    <script type="text/javascript" th:inline="javascript">
+
+      $('.ui.form').form({
+        fields: {
+          title: {
+            identifier: 'content',
+            rules: [{
+              type: 'empty',
+              prompt: '请输入评论内容'
+            }
+            ]
+          },
+          content: {
+            identifier: 'nickname',
+            rules: [{
+              type: 'empty',
+              prompt: '请输入名称'
+            }]
+          },
+          type: {
+            identifier: 'email',
+            rules: [{
+              type: 'email',
+              prompt: '请填写正确的邮箱地址'
+            }]
+          }
+        }
+      });
+
+      $(function () {
+        $("#comment-container").load(/*[[@{/friendlinks}]]*/"/friendlinks");
+      });
+
+      $('#commentpost-btn').click(function () {
+        const boo = $('.ui.form').form('validate form');
+        if (boo) {
+          postData();
+        } else {
+          alert('请填写完整信息！');
+        }
+      });
+
+      function postData() {
+        $("#comment-container").load(/*[[@{/newMessage}]]*/"",{
+          "parentMessage.id" : $("[name='parentMessage.id']").val(),
+          "messageType" : $("[name='messageType']").val(),
+          // "blog.id" : $("[name='blog.id']").val(),
+          "nickname": $("[name='nickname']").val(),
+          "email"   : $("[name='email']").val(),
+          "content" : $("[name='content']").val()
+        },function (responseTxt, statusTxt, xhr) {
+          $(window).scrollTo($('#comment-container'),500);
+          clearContent();
+        });
+      }
+
+      function clearContent() {
+        $("[name='nickname']").val('');
+        $("[name='email']").val('');
+        $("[name='content']").val('');
+        $("[name='parentMessage.id']").val(-1);
+        $("[name='messageType']").val(1);
+        $("[name='content']").attr("placeholder", "请输入评论信息...");
+      }
+
+      function reply(obj) {
+        const messageId = $(obj).data('messageid');
+        const messageNickname = $(obj).data('messagenickname');
+        $("[name='content']").attr("placeholder", "@"+messageNickname).focus();
+        $("[name='parentMessage.id']").val(messageId);
+        $(window).scrollTo($('#comment-form'),500);
+      }
+    </script>
+
+    <script type="text/javascript">
+
+              $(function(){
+
+                $('.emotion').qqFace({
+
+                  assign:'content',
+
+                  path:"[[@{/lib/qqFace/arclist/}]]"	//表情存放的路径
+
+                });
+              });
+    </script>
+
+    <!--/*/<th:block th:replace="fragments :: page-script">/*/-->
+    <!-- loading gif -->
+    <script type="text/javascript">
+      $(window).on('load',function(){
+        $('.loader-wrapper').fadeOut("normal")
+      });
+    </script>
+    <!-- scroll-down-bar的js实现 -->
+    <script src="../static/js/Scroll.js"></script>
+    <!-- 页尾效果 -->
+    <script src="../static/js/footer.js"></script>
+    <script src="../static/js/snow.js"></script>
+    <!-- 下拉框显示 -->
+    <script type="text/javascript">
+      $(".ui.dropdown").dropdown();
+    </script>
+    <!-- 移动端的菜单显示 -->
+    <script>
+          $('#menu-show').click(function(){
+            $('.ui.sidebar')
+            .sidebar({transition:"overlay",dimPage:"false"})
+            .sidebar('toggle');
+          })
+    </script>
+    <!-- 滚动条下滑的导航栏出现隐藏 -->
+    <script src="../static/js/head.js"></script>
+    <script>
+      (function () {
+        var header = document.querySelector("#nav");
+
+        var headroom = new Headroom(header, {
+          offset: 60,
+          tolerance: 5,
+          classes: {
+            initial: "headroom",
+            pinned: "headroom--pinned",
+            unpinned: "headroom--unpinned",
+            top:"headroom--top"
+            
+          }
+        });
+        headroom.init();
+        
+      })();
+
+    </script>
+    <!-- 打字机效果 -->
+    <script src="../static/lib/typed/typed.js"></script>
+    <!-- 进入网页的特效 -->
+    <script>
+      $('#nav')
+        .transition({
+          animation  : 'fade in',
+          duration   : '1.75s',
+        });
+        $('.scroll-down-bar')
+        .transition({
+          animation  : 'fade down in',
+          duration   : '1.25s',
+        });
+
+        $('#site-info')
+        .transition({
+          animation: 'fade in',
+          duration : '1.75s'
+        })
+      </script>
+    <!-- 点击出现文字效果 -->
+    <script src="../static/js/font.js"></script>
+    <!-- live2d模型 -->
+    <script src="../static/live2dw/lib/L2Dwidget.min.js"></script> 
+    <script>
+          L2Dwidget.init({
+            "model":{jsonPath:"../static/live2dw/assets/asuna_04.model.json"},
+            "display":{"position":"right","width":140,"height":240},
+            "mobile":{"show":false},
+            "log":false,
+            "pluginJsPath":"../static/live2dw/lib/",
+            "pluginModelPath":"../static/live2dw/assets/",
+            "pluginRootPath":"../static/live2dw/",
+            "tagMode":false
+          })
+    </script>
+    <!--/*/</th:block>/*/-->
+
+    <!--  打字机文字  -->
+    <Script>
+      var subtitleEffect = true
+      if (subtitleEffect) {
+        var typed = new Typed("#subtitle", {
+          strings: "所有的朋友都曾是陌生人".split(","),
+          startDelay: 300,
+          typeSpeed: 150,
+          // loop: true,
+          backSpeed: 50
+        })
+      } else {
+        document.getElementById("subtitle").innerHTML = '愿始终是少年敢笑敢言'
+      }
+    </Script>
+  </body>
+</html>

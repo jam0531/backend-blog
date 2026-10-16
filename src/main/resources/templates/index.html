@@ -1,0 +1,86 @@
+<!DOCTYPE   html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="十二的温馨小站">
+    <meta name="keyword" content="十二的温馨小站">
+    <meta name="author" content="十二, Alex">
+    <title>十二</title>
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/css/cover.css" th:href="@{/css/cover.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+</head>
+
+<body class="overflow">
+
+<div class="navwrapper">
+    <a href="/" th:src="@{/home}"  class="w-inline-block">
+        <img src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/202204072344734.png" loading="lazy" alt="" class="logosmall" style="opacity: 1;">
+    </a>
+    <div class="toprightwrapper">
+        <a href="" th:href="@{/about}" class="link w-inline-block" style="opacity: 1;">
+            <div class="linkstyle thin" style="opacity: 0;">About</div>
+        </a>
+    </div>
+    <div class="topleftwrapper">
+        <div href="#" target="_blank" class="link w-inline-block" style="opacity: 1;" onclick="changeBg()">
+            <div class="linkstyle thin" style="opacity: 0;">Change</div>
+        </div>
+    </div>
+</div>
+
+<div  class="bgimageboxouter">
+    <div class="bgimagebox">
+        <div class="bgimage" th:style="'background-image: url(' + ${bg.piclink} + ');'"></div>
+    </div>
+</div>
+
+<div class="bottomwrapper div-block" style="opacity: 0">
+    <div style="opacity: 1;" class="gradient shaded"></div>
+    <a href="home.html" th:href="@{/home}">
+        <div class="buttonwrapper outline" style="opacity: 1">
+            <div class="buttontext white">Enter The WebSite</div>
+        </div>
+    </a>
+    <div class="spacersmall"></div>
+    <div style="color: #ffffff" class="ui m-text-thin m-text-spaced">网站已运行：<span id="htmer_time" class="item m-text-thin"></span> </div>
+    <div class="spacemedium"></div>
+</div>
+
+
+<!-- 点击出现字体 -->
+<script src="../static/js/font.js"></script>
+<script src="../static/js/cal_time.js" th:src="@{/js/cal_time.js}"></script>
+<script type="text/javascript">
+    $(function (){
+        $('.bottomwrapper').mouseenter(function (){
+            $('.linkstyle').addClass("linkstylehover")
+            $('.linkstyle.link').addClass("linkstylethinhover")
+        })
+        $('.bottomwrapper').mouseleave(function (){
+            $('.linkstyle').removeClass("linkstylehover")
+            $('.linkstyle.link').removeClass("linkstylethinhover")
+        })
+        $('.linkstyle').mouseenter(function (){
+            $('.bottomwrapper').addClass("bottomwrapperhover")
+        })
+        $('.linkstyle').mouseleave(function (){
+            $('.bottomwrapper').removeClass("bottomwrapperhover")
+        })
+    })
+
+    function changeBg(){
+        $.get("/randomImg", function (data){
+            console.log(data)
+            $(".bgimage").css("background-image","url(" + data +")")
+        })
+    }
+</script>
+
+</body>
+</html>

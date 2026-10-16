@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="十二的个人博客,记录生活中的点点滴滴, 希望与大家一起分享美好事物">
+    <meta name="keyword" content="十二,十二的个人博客, Alex的个人博客">
+    <meta name="author" content="十二, Alex">
+    <title>管理界面</title>
+
+    <link href="../../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico"><link rel="stylesheet" href="../../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../../static/css/public.css" th:href="@{/css/public.css}">
+    <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../../static/css/friend-links.css" th:href="@{/css/friend-links.css}">
+    <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+  </head>
+
+  <body>
+
+
+  <div>
+
+  <div th:replace="admin/_fragments :: header(~{::h1})" id="header">
+      <!-- 导航栏 -->
+      <nav class="m-shadow-header" id="nav">
+
+          <div class="ui stackable grid">
+
+              <div class="four wide column" align="center" >
+                  <div class="site-top" id="nav-logo">
+                      <div class="site-logo">
+                <span class="site-logo-title m-mobile-site-logo-title">
+                  <a href="index.html" alt="十二" class="">
+                    <span class="sakuraso">十二</span>
+                    <span class="no">の</span>
+                    <span class="shironeko">世界</span>
+                  </a>
+                </span>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="eight wide column m-mobile-hide" align="center">
+                  <div id="nav-menu">
+                      <div class="ui inverted stackable secondary menu">
+                          <a href="index.html" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                          <a href="#" class="item  rubberBand"><i class="paper plane icon"></i>博客</a>
+                          <a href="#" class="item  shake"><i class="tags icon"></i>标签</a>
+                          <a href="#" class="item pulse"><i class="list alternate outline icon"></i>分类</a>
+                          <a href="#" class="item  tada"><i class="user plus icon"></i>友链</a>
+                          <a href="#" class="item  swing"><i class="image icon"></i>图片</a>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="four wide column m-mobile-hide" align="center">
+                  <div id="login">
+                      <a href="admin/login.html" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+                  </div>
+
+              </div>
+          </div>
+
+          <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+              <i class="sidebar icon"></i>
+          </a>
+      </nav>
+
+      <header id="page-header" class="header-image">
+          <div id="site-info">
+              <h1 id="site-title">网站管理</h1>
+              <div id="site-subtitle">
+                  <span id="subtitle"></span>
+                  <span class="typed-cursor"></span>
+              </div>
+          </div>
+
+          <div class="scroll-down-bar">
+              <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+          </div>
+
+      </header>
+  </div>
+
+  <div id="main">
+          <div class="m-container">
+              <div class="ui basic segment m-margin-tb cube">
+                <div class="ui stackable grid m-padded-large"  style="flex-wrap: wrap;">
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/blogs}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large paper plane icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">博客管理</h3>
+    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/tags}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large tags icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">标签管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/types}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large list alternate outline icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">分类管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/friendlinks}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large user plus icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">友链管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/notices}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large bullhorn icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">公告管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/comments}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large comment icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">评论管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/messages}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large comment alternate outline icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">留言管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 card ">
+                        <a href="" th:href="@{/admin/pictures}" target="_blank">
+                            <div class="card-body">
+                                <div class="m-padded">
+                                    <i class="large image icon"></i>
+                                </div>
+                                <div style="position:absolute; top:30%">
+                                    <h3 class="card-title link-card-title">图片管理</h3>
+                                    <!--                                <p class="card-text link-card-text">愿始终是少年敢笑敢言</p>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+
+  <footer th:replace="admin/_fragments :: footer" style="bottom: 0">
+      <div id="footer">
+        <div class="banner">
+            <div class="view">
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                class="morning"
+              />
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                class="afternoon"
+              />
+              <img
+                src="../../static/images/bilibili-tree/snow.png"
+                class="ball"
+              />
+              <video autoplay loop muted class="evening">
+                <source
+                  src="../../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                  type="video/webm"
+                />
+              </video>
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                class="window-cover"
+              />
+            </div>
+            <div class="tree">
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                class="morning"
+              />
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                class="afternoon"
+              />
+              <img
+                src="../../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                class="evening"
+              />
+            </div>
+        </div>
+      </div>
+    </footer>
+
+  <div th:replace="admin/_fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+
+  </div>
+
+  <!--/*/<th:block th:replace="admin/_fragments :: page-script">/*/-->
+  <!--/*/</th:block>/*/-->
+
+    </body>
+</html>
+

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="十二的个人博客,记录生活中的点点滴滴, 希望与大家一起分享美好事物">
+    <meta name="keyword" content="十二,十二的个人博客, Alex的个人博客">
+    <meta name="author" content="十二, Alex">
+    <title>十二</title>
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}">
+    <link rel="stylesheet" href="../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+    <link rel="stylesheet" href="../static/lib/Aplayer/APlayer.min.css" th:href="@{/lib/Aplayer/APlayer.min.css}">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+  </head>
+
+  <body>
+      <!-- 移动端的侧边栏 -->
+      <div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+          <div class="item" align="center">
+            <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+          </div>
+          <div class="item attached">
+            <div class="mobile_post_data">
+              <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                  <a href="#">
+                    <div class="headline">Articles</div>
+                    <div class="length_num">10</div>
+                  </a>
+                </div>
+              </div>
+
+              <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                  <a href="#">
+                    <div class="headline">Tags</div>
+                    <div class="length_num">2</div>
+                  </a>
+                </div>
+              </div>
+
+              <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                  <a href="#">
+                    <div class="headline">Categories</div>
+                    <div class="length_num">6</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a class="item site-icon" href="home.html">
+            <span><i class="home icon"></i>首页</span>
+          </a>
+          <a class="item site-icon" href="archive.html">
+            <span><i class="box icon"></i>归档</span>
+          </a>
+          <a class="item site-icon" href="types.html">
+            <span><i class="tags icon"></i>分类</span>
+          </a>
+          <a class="item site-icon" href="message.html">
+            <span><i class="comment icon"></i>留言</span>
+          </a>
+          <a class="item site-icon" href="friend-links.html">
+            <span><i class="user plus icon"></i>友链</span>
+          </a>
+          <a href="about.html" class="item site-icon" >
+            <span><i class="user icon"></i>关于 我</span>
+          </a>
+          <a href="aboutWeb.html" class="item site-icon" >
+            <span><i class="laptop icon"></i>关于 网站</span>
+          </a>
+      </div>
+
+      <!-- 加载动画 -->
+      <div th:replace="fragments :: loading-animate" class="loader-wrapper">
+        <img src="../static/images/loading.gif">
+      </div>
+
+      <!--SEARCH-->
+      <div th:replace="fragments :: search" class="ui fullscreen modal" id="search">
+        <i class="large m-white close icon"></i>
+        <div class="ui container">
+          <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+            <div class="ui large search">
+              <div class="ui icon input">
+                <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+                <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+              </div>
+              <div class="results"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="aplayer"></div>
+
+      <div class="pusher" style="position: relative;">
+          <canvas id="c" style="position: fixed; z-index: -1;"></canvas>
+
+          <div th:replace="fragments :: header(~{::h1})" id="header">
+          <!-- 导航栏 -->
+          <nav class="m-shadow-header" id="nav">
+
+            <div class="ui stackable grid">
+
+              <div class="four wide column" align="center" >
+                <div class="site-top" id="nav-logo">
+                  <div class="site-logo">
+                    <span class="site-logo-title m-mobile-site-logo-title">
+                      <a>
+                        <span class="sakuraso">十二</span>
+                        <span class="no">の</span>
+                        <span class="shironeko">世界</span>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+<!--                  <div id="logo"></div>-->
+              </div>
+
+              <div class="eight wide column m-mobile-hide" align="center">
+                <div id="nav-menu">
+                  <div class="ui inverted stackable secondary menu">
+                    <a href="home.html" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                    <a href="archive.html" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+                    <a href="types.html" class="item  shake"><i class="tags icon"></i>分类</a>
+                    <a href="message.html" class="item pulse"><i class="comment icon"></i>留言</a>
+                    <a href="friend-links.html" class="item  tada"><i class="user plus icon"></i>友链</a>
+                    <a href="picture.html" class="item  swing"><i class="music icon"></i>音乐</a>
+                    <div class="item">
+                          <div class="ui dropdown">
+                            <div class="text">
+                              关于
+                            </div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                              <a href="about.html" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>
+                              <a href="aboutWeb.html" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="left item">
+                      <div class="ui dropdown">
+                                        <i class="large search link icon"></i>
+                                        <div class="menu">
+                                          <div class="ui icon search input">
+                                            <i class="search icon"></i>
+                                            <input type="text" placeholder="Search tags...">
+                                          </div>
+                                          <div class="divider"></div>
+                                          <div class="header">
+                                            <i class="tags icon"></i>
+                                            Tag Label
+                                          </div>
+                                          <div class="scrolling menu">
+                                            <div class="item">
+                                              <div class="ui blue empty circular label"></div>
+                                              Programing
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui teal empty circular label"></div>
+                                              Daily lives
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui orange empty circular label"></div>
+                                              Study
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui violet empty circular label"></div>
+                                              Game
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui red empty circular label"></div>
+                                              pytorch
+                                            </div>
+                                          </div>
+                                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="four wide column m-mobile-hide" align="center">
+                <div id="login">
+                  <a href="admin/login.html" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+                </div>
+
+              </div>
+          </div>
+
+            <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+              <i class="sidebar icon"></i>
+            </a>
+          </nav>
+
+          <header id="page-header" class="header-image">
+            <div id="site-info">
+              <h1 id="site-title">十二 の 世界</h1>
+              <div id="site-subtitle">
+                <span id="subtitle"></span>
+                <span class="typed-cursor"></span>
+              </div>
+            </div>
+
+            <div class="scroll-down-bar">
+                <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+            </div>
+
+          </header>
+        </div>
+
+          <div id="main">
+              <div class="ui m-container">
+                <div class="ui stackable grid">
+
+                  <!-- 左边的卡片 -->
+                  <div class="five wide column m-mobile-hide">
+                    <div id="left-bar">
+                      <div class="ui card card-box m-mobile-hide" id="card" align="center" >
+                              <div class="image" style="background-color: white;">
+                                <img class="ui circular avatar image bordered medium myself" src="../static/images/twelve.jpg" th:src="@{/images/twelve.jpg}" style="width: 150px;height: 150px;" >
+                              </div>
+                              <div class="content">
+                                <a class="header" th:href="@{/aboutme}">十二</a>
+                                <div class="meta">
+                                  <a href="https://github.com/jam0531" target="_blank"><i class="large github icon"></i></a>
+                                  <a href="" target="_blank"><i class="large copyright icon" ></i></a>
+                                  <a href="mailto:1695465925@qq.com"><i class="large envelope outline icon"></i></a>
+                                </div>
+                                <div class="description">
+                                  一个正在学习编程的菜鸟
+                                </div>
+                              </div>
+                              <div class="item attached">
+                                <div class="mobile_post_data">
+                                  <div class="mobile_data_item is-center">
+                                    <div class="mobile_data_link">
+                                      <a>
+                                        <div class="headline">Articles</div>
+                                        <div class="length_num" th:text="${#arrays.length(publishedBlogs)}">10</div>
+                                      </a>
+                                    </div>
+                                  </div>
+
+                                <div class="mobile_data_item is-center">
+                                  <div class="mobile_data_link">
+                                    <a>
+                                      <div class="headline">Tags</div>
+                                      <div class="length_num" th:text="${#arrays.length(totalTags)}">2</div>
+                                    </a>
+                                  </div>
+                                </div>
+
+                                <div class="mobile_data_item is-center">
+                                  <div class="mobile_data_link">
+                                    <a href="#" th:href="@{/types}" target="_blank">
+                                      <div class="headline">Types</div>
+                                      <div class="length_num" th:text="${#arrays.length(totalTypes)}">6</div>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+
+                      <div class="card-box m-mobile-hide" id="announcement">
+                              <div class="title"><i class="bullhorn icon"></i><span>公告</span></div>
+                              <div class="content" th:text="${notice.content}" th:if="${notice != null}">欢迎来到我的网站(*^▽^*)</div>
+                              <div class="content" th:if="${notice == null}">欢迎来到我的网站(*^▽^*)</div>
+                      </div>
+
+                      <div class="ui vertical menu card-box m-mobile-hide" id="recentBlogs">
+                        <a class="item header" style="font-size: 16px;"><i class="history icon"></i>最新</a>
+                        <a class="item" style="display: flex" th:href="@{/blog/{id}(id=${tblog.id})}" th:each="tblog : ${TopBlogs}" target="_blank">
+                            <div class="recent-img-box">
+                              <img class="post-img" th:src="@{${tblog.blogPic}}" src="https://w.wallhaven.cc/full/z8/wallhaven-z8odwg.jpg" th:alt="${tblog.title}">
+                            </div>
+                            <div class="ui stackable grid">
+                            <div class="row m-padding-lr-tiny m-padding-bottom-tiny m-middle" style="letter-spacing: 2.5px;line-height: 1.1rem" th:text="${tblog.title}">
+                              黑客帝国爱丽丝
+                            </div>
+                            <div class="row m-padding-lr-tiny m-padding-tb-clear">
+                              <span class="m-gray m-middle" th:text="${#temporals.format(tblog.createTime,'yyyy-MM-dd')}">2020-12-31</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+
+                      <div class="ui vertical menu card-box m-mobile-hide" id="classification">
+                        <a href="types.html" th:href="@{/types}" class="item header" target="_blank" style="font-size: 16px;"><i class="align justify icon"></i>分类</a>
+                        <a href="#" th:href="@{/type/{id}(id=${type.id})}" target="_blank " class="item" th:each="type : ${topTypes}"><span th:text="${type.typeName}">生活笔记</span><div class="ui blue label"><span th:text="${#arrays.length(type.blogs)}">0</span></div></a>
+                      </div>
+
+                      <div class="ui vertical menu card-box m-mobile-hide" id="recommand">
+                        <a class="item header" style="font-size: 16px;" ><i class="bookmark icon"></i>推荐</a>
+                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item" th:each="blog : ${recommendBlogs}"><span th:text="${blog.title}">我的个人博客来了！！</span></a>
+                      </div>
+
+                      <div class="ui vertical menu card-box m-mobile-hide" id="archives">
+                        <a href="archive.html" th:href="@{/archives}" class="item header" target="_blank" style="font-size: 16px;"><i class="archive icon"></i>归档</a>
+                        <a href="#" class="item" th:each="item : ${archives}" target="_blank" th:href="@{/archive/{year}(year=${item.key})}">
+                          <span th:text="${item.key}">2021-12</span>
+                          <div class="ui blue basic label" th:text="${#arrays.length(item.value)}">0</div>
+                        </a>
+                      </div>
+
+
+                    </div>
+                  </div>
+                  <!-- 右边的博客列表 -->
+                  <div class="eleven wide column" id="right-bar">
+                      <div th:fragment="blogList">
+                        <input type="hidden" name="page">
+                        <div class="post-item ui stackable grid" th:each="blog : ${page.records}" >
+                            <div class="seven wide column post-img-box">
+                              <div class="img-box left-radius m-border-radius">
+                                <a href="blog.html" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}">
+                                  <img th:attr="data-original=@{${blog.blogPic}}" width="300" height="260" src="../static/images/bg-image/bg.jpg" th:src="@{${blog.blogPic}}" th:alt="${blog.title}" class="post-img lazyloaded">
+                                </a>
+                              </div>
+                            </div>
+                            <div class="nine wide column middle aligned">
+                                <div class="post-article-info">
+                                  <a href="blog.html" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" title="我的个人博客来了！！" th:text="${blog.title}" class="article-title">我的个人博客来了！！ </a>
+                                  <div class="content" th:text="${blog.description}">我的个人网站终于搭好了，希望大家多多关照</div>
+                                  <div class="ui horizontal link list">
+                                      <div class="item">
+                                        <time datetime="2021-11-25">
+                                          <i class="calendar alternate outline icon"></i>
+                                          <span th:text="${#temporals.format(blog.updateTime,'yyyy-MM-dd')}">2021-11-25</span>
+                                        </time>
+                                      </div>
+                                      <div class="item">
+                                        <a href="about.html" th:href="@{/aboutme}">
+                                            <i class="user outline icon"></i>
+                                            <span th:text="${blog.user.aliasname}">Alex</span>
+                                        </a>
+                                      </div>
+                                      <div class="item">
+                                        <i class="eye icon"></i>
+                                        <span th:text="${blog.views}">100</span>
+                                      </div>
+
+                                    </div>
+                                  <div class="m-padded-tb-small">
+                                    <div class="ui teal large label">
+                                      <span th:text="${blog.flag}">生活随笔</span>
+                                    </div>
+                                  <a href="" th:href="@{/type/{id}(id=${blog.type.id})}" target="_blank">
+                                    <div class="ui blue large label">
+                                        <span th:text="${blog.type.typeName}">生活随笔</span>
+                                    </div>
+                                  </a>
+                                  </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui basic segment" align="center" id="pagination">
+                            <div class="ui pagination menu" th:if="${page.totalPages}>1">
+                                <a class="item" th:text="${i}" id="page-btn" th:attr="data-page=${i}-1" onclick="page(this)" th:each="i : ${#numbers.sequence(1,page.totalPages)}">
+                                  1
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+
+                </div>
+              </div>
+          </div>
+
+          <footer th:replace="fragments :: footer">
+          <div id="footer">
+            <div class="banner">
+                <div class="view">
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                    class="morning"
+                  />
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                    class="afternoon"
+                  />
+                  <img
+                    src="../static/images/bilibili-tree/snow.png"
+                    class="ball"
+                  />
+                  <video autoplay loop muted class="evening">
+                    <source
+                      src="../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                      type="video/webm"
+                    />
+                  </video>
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                    class="window-cover"
+                  />
+                </div>
+                <div class="tree">
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                    class="morning"
+                  />
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                    class="afternoon"
+                  />
+                  <img
+                    src="../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                    class="evening"
+                  />
+                </div>
+            </div>
+          </div>
+        </footer>
+
+          <div th:replace="fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+
+      </div>
+
+      <script src="../static/lib/Aplayer/APlayer.min.js" th:src="@{/lib/Aplayer/APlayer.min.js}"></script>
+      <script>
+          const ap = new APlayer({
+              container: document.getElementById('aplayer'),
+              autoplay: false,
+              fixed: true,
+              mutex: true,
+              listFolded: false,
+              autoHide: true,
+              preload: 'auto',
+              theme: '#e9e9e9',
+              autoHide: true,
+              audio: [
+                  {
+                      name: 'Kataomoi',
+                      artist: 'Aimer',
+                      url: "[[@{/music/Kataomoi.mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301103712.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '孤勇者',
+                      artist: '陈奕迅',
+                      url: "[[@{/music/陳奕迅 - 孤勇者 (《英雄聯盟：雙城之戰》動畫劇集中文主題曲) (《英雄聯盟：雙城之戰》動畫劇集中文主題曲) myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301247105.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '阴天快乐',
+                      artist: '陈奕迅',
+                      url: "[[@{/music/陈奕迅 - 阴天快乐 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301247030.png',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '苦瓜',
+                      artist: '陈奕迅',
+                      url: "[[@{/music/陳奕迅 - 苦瓜 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301259006.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Flamingo',
+                      artist: 'Kenshi Yonezu',
+                      url: "[[@{/music/Kenshi Yonezu - Flamingo myfreemp3.vip  (1).mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301601700.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Lemon',
+                      artist: 'Kenshi Yonezu',
+                      url: "[[@{/music/Kenshi Yonezu - Lemon myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301103470.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Loser',
+                      artist: 'Kenshi Yonezu',
+                      url: "[[@{/music/Kenshi Yonezu - Loser myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301603568.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'This Game',
+                      artist: 'RMaster feat. Shiroku',
+                      url: "[[@{/music/RMaster feat. Shiroku - This Game (From _No Game No Life_) (Japanese Vocal Version) (Japanese Vocal Version) myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301248232.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '七友',
+                      artist: '梁汉文',
+                      url: "[[@{/music/梁汉文 - 七友 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301305033.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: '大城小爱',
+                      artist: '王力宏',
+                      url: "[[@{/music/王力宏 - 大城小爱 myfreemp3.vip  (1).mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301620913.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '花田错',
+                      artist: '王力宏',
+                      url: "[[@{/music/王力宏 - 花田错 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301620913.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '爱在西元前',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 爱在西元前 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301424902.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '简单爱',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 简单爱 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301424902.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '半岛铁盒',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 半岛铁盒 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301506469.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '东风破',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 东风破 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301506469.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '晴天',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰倫 (Jay Chou) - 晴天 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301506469.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '七里香',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 七里香 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256238.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '搁浅',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 搁浅 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256238.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '园游会',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 园游会 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256238.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '夜曲',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 夜曲 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '发如雪',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 发如雪 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '麦芽糖',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 麦芽糖 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '枫',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 枫 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '浪漫手机',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 浪漫手机 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '一路向北',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 一路向北 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256765.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: '听妈妈的话',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰倫_ Jay Chou - 听妈妈的话_ Ting Mama de Hua myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301517603.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '菊花台',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 菊花台 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301517603.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: '青花瓷',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 青花瓷 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301305169.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '彩虹',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰倫 - 彩虹 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301305169.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '兰亭序',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 兰亭序 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256811.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '稻香',
+                      artist: '周杰伦',
+                      url: "[[@{/music/daoxiang.flac}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256811.jpg',
+                      // lrc: 'lrc1.lrc',
+                  }
+                  ,
+                  {
+                      name: '说好的幸福呢',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 说好的幸福呢 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256811.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '给我一首歌的时间',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 给我一首歌的时间 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256811.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '花海',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 花海 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301256811.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '烟花易冷',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 烟花易冷 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301530661.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '红尘客栈',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 红尘客栈 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301530661.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '鞋子特大号',
+                      artist: '周杰伦',
+                      url: "[[@{/music/Jay Chou 周杰伦 - 鞋子特大号 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301529746.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '手写的从前',
+                      artist: '周杰伦',
+                      url: "[[@{/music/Jay Chou 周杰伦 - 手写的从前 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301529746.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '告白气球',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 告白气球 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301529550.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: '不能说的秘密',
+                      artist: '周杰伦',
+                      url: "[[@{/music/周杰伦 - 不能说的秘密 myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301537246.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Call Me Maybe',
+                      artist: 'Carly Rae Jepsen',
+                      url: "[[@{/music/Carly Rae Jepsen - Call Me Maybe myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301559721.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Love Yourself',
+                      artist: 'Justin Boys',
+                      url: "[[@{/music/Justin Boys - Love Yourself - Music for Serendipity myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301600146.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'Sugar',
+                      artist: 'Maroon 5',
+                      url: "[[@{/music/Maroon 5 - Sugar myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301105115.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'Payphone',
+                      artist: 'Maroon 5 feat. Wiz Khalifa',
+                      url: "[[@{/music/Maroon 5 feat. Wiz Khalifa - Payphone myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301606928.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'Tiny Light',
+                      artist: 'Raon Lee',
+                      url: "[[@{/music/Raon Lee - Tiny Light myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301248290.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+                  {
+                      name: 'Something Just Like This',
+                      artist: 'The Chainsmokers',
+                      url: "[[@{/music/The Chainsmokers, Coldplay - Something Just Like This myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301105806.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'Closer',
+                      artist: 'The Chainsmokers feat. Halsey',
+                      url: "[[@{/music/The Chainsmokers feat. Halsey - Closer myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301610688.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'See You Again',
+                      artist: 'Wiz Khalifa feat. Charlie Puth',
+                      url: "[[@{/music/Wiz Khalifa feat. Charlie Puth - See You Again (feat. Charlie Puth) myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301612652.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+
+                  {
+                      name: 'Turnin\'',
+                      artist: 'Young Rising Sons',
+                      url: "[[@{/music/Young Rising Sons - Turnin' myfreemp3.vip .mp3}]]",
+                      cover: 'https://cdn.jsdelivr.net/gh/jam0531/blogPic/music/202201301614251.jpg',
+                      // lrc: 'lrc1.lrc',
+                  },
+              ]
+          });
+      </script>
+
+      <script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+      <!-- 首页幻灯片效果 -->
+      <script src="../static/js/jquery.backstretch.min.js" th:src="@{/js/jquery.backstretch.min.js}"></script>
+      <script>
+        $('#page-header').backstretch([
+          '[[@{/images/index-main/main.jpg}]]',
+          '[[@{/images/index-main/main6.jpg}]]',
+          '[[@{/images/index-main/main5.jpg}]]',
+          '[[@{/images/index-main/main4.jpg}]]',
+          '[[@{/images/index-main/main8.jpg}]]',
+          '[[@{/images/index-main/main9.jpg}]]',
+          '[[@{/images/index-main/main10.jpg}]]',
+          '[[@{/images/index-main/main11.png}]]',
+        ],{duration: 15000, fade:2500},)
+      </script>
+
+<!--/*/<th:block th:replace="fragments :: page-script">/*/-->
+        <!-- loading gif -->
+        <script type="text/javascript">
+      $(window).on('load',function(){
+        $('.loader-wrapper').fadeOut("normal")
+      });
+    </script>
+        <!-- 页尾效果 -->
+        <script src="../static/js/footer.js" ></script>
+        <script src="../static/js/snow.js" ></script>
+        <!-- 下拉栏 -->
+        <script type="text/javascript">
+          $(".ui.dropdown").dropdown();
+        </script>
+        <!-- 移动端的菜单显示 -->
+        <script>
+          $('#menu-show').click(function(){
+            $('.ui.sidebar')
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('toggle');
+          })
+        </script>
+        <!-- 点击出现文字效果 -->
+        <script src="../static/js/font.js" ></script>
+        <!-- scroll-down-bar的js实现 -->
+        <script src="../static/js/Scroll.js" ></script>
+        <!-- live2d模型 -->
+        <script src="../static/live2dw/lib/L2Dwidget.min.js" ></script>
+        <script>
+          L2Dwidget.init({
+            "model":{jsonPath:"../static/live2dw/assets/asuna_04.model.json"},
+            "display":{"position":"right","width":140,"height":240},
+            "mobile":{"show":false},
+            "log":false,
+            "pluginJsPath":"../static/live2dw/lib/",
+            "pluginModelPath":"../static/live2dw/assets/",
+            "pluginRootPath":"../static/live2dw/",
+            "tagMode":false
+          })
+        </script>
+        <!-- 进入网页的特效 -->
+        <script>
+        $('#nav')
+          .transition({
+            animation  : 'fade in',
+            duration   : '1.75s',
+          });
+          $('.scroll-down-bar')
+          .transition({
+            animation  : 'fade down in',
+            duration   : '1.25s',
+          });
+
+          $('#site-info')
+          .transition({
+            animation: 'fade in',
+            duration : '1.75s'
+          })
+        </script>
+        <!-- 滚动条下滑的导航栏出现隐藏 -->
+        <script src="../static/js/head.js"></script>
+        <script>
+          (function () {
+          var header = document.querySelector("#nav");
+
+          var headroom = new Headroom(header, {
+            offset: 60,
+            tolerance: 0,
+            classes: {
+              initial: "headroom",
+              pinned: "headroom--pinned",
+              unpinned: "headroom--unpinned",
+              top:"headroom--top"
+
+            }
+          });
+          headroom.init();
+
+        })();
+        </script>
+        <!-- 打字机效果 -->
+        <script src="../static/lib/typed/typed.js"></script>
+        <script type="text/javascript">
+    $(document).ready(function() {
+      var canvas = document.getElementById("c");
+      var ctx = canvas.getContext("2d");
+      var c = $("#c");
+      var w,h;
+      var pi = Math.PI;
+      var all_attribute = {
+        num:10,            			 // 个数
+        start_probability:0.1,		     // 如果数量小于num，有这些几率添加一个新的
+        radius_min:1,   			     // 初始半径最小值
+        radius_max:2,   			     // 初始半径最大值
+        radius_add_min:.3,               // 半径增加最小值
+        radius_add_max:.5,               // 半径增加最大值
+        opacity_min:0.3,                 // 初始透明度最小值
+        opacity_max:0.5, 				 // 初始透明度最大值
+        opacity_prev_min:.003,            // 透明度递减值最小值
+        opacity_prev_max:.005,            // 透明度递减值最大值
+        light_min:40,                 // 颜色亮度最小值
+        light_max:70,                 // 颜色亮度最大值
+      };
+      var style_color = find_random(0,360);
+      var all_element =[];
+      window_resize();
+      function start(){
+        window.requestAnimationFrame(start);
+        style_color+=.1;
+        ctx.fillStyle = 'hsl('+style_color+',100%,97%)';
+        ctx.fillRect(0, 0, w, h);
+        if (all_element.length < all_attribute.num && Math.random() < all_attribute.start_probability){
+          all_element.push(new ready_run);
+        }
+        all_element.map(function(line) {
+          line.to_step();
+        })
+      }
+      function ready_run(){
+        this.to_reset();
+      }
+      ready_run.prototype = {
+        to_reset:function(){
+          var t = this;
+          t.x = find_random(0,w);
+          t.y = find_random(0,h);
+          t.radius = find_random(all_attribute.radius_min,all_attribute.radius_max);
+          t.radius_change = find_random(all_attribute.radius_add_min,all_attribute.radius_add_max);
+          t.opacity = find_random(all_attribute.opacity_min,all_attribute.opacity_max);
+          t.opacity_change = find_random(all_attribute.opacity_prev_min,all_attribute.opacity_prev_max);
+          t.light = find_random(all_attribute.light_min,all_attribute.light_max);
+          t.color = 'hsl('+style_color+',100%,'+t.light+'%)';
+        },
+        to_step:function(){
+          var t = this;
+          t.opacity -= t.opacity_change;
+          t.radius += t.radius_change;
+          if(t.opacity <= 0){
+            t.to_reset();
+            return false;
+          }
+          ctx.fillStyle = t.color;
+          ctx.globalAlpha = t.opacity;
+          ctx.beginPath();
+          ctx.arc(t.x,t.y,t.radius,0,2*pi,true);
+          ctx.closePath();
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+      function window_resize(){
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+      }
+      $(window).resize(function(){
+        window_resize();
+      });
+      function find_random(num_one,num_two){
+        return Math.random()*(num_two-num_one)+num_one;
+      }
+      (function() {
+        var lastTime = 0;
+        var vendors = ['webkit', 'moz'];
+        for(var xx = 0; xx < vendors.length && !window.requestAnimationFrame; ++xx) {
+          window.requestAnimationFrame = window[vendors[xx] + 'RequestAnimationFrame'];
+          window.cancelAnimationFrame = window[vendors[xx] + 'CancelAnimationFrame'] ||
+                  window[vendors[xx] + 'CancelRequestAnimationFrame'];
+        }
+
+        if (!window.requestAnimationFrame) {
+          window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+            var id = window.setTimeout(function() {
+              callback(currTime + timeToCall);
+            }, timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+          };
+        }
+        if (!window.cancelAnimationFrame) {
+          window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+          };
+        }
+      }());
+      start();
+    });
+  </script>
+<!--/*/</th:block>/*/-->
+
+      <script src="../static/js/wow.min.js" th:src="@{/js/wow.min.js}"></script>
+      <script>
+          new WOW().init();
+      </script>
+
+      <script>
+        var subtitleEffect = true
+        if (subtitleEffect) {
+          var typed = new Typed("#subtitle", {
+            strings: "你所见即是我 好与坏我都不反驳,习惯不习惯的习惯会习惯,鲜衣怒马，此间少年,宁鸣而死，不默而生".split(","),
+            startDelay: 300,
+            typeSpeed: 150,
+            loop: true,
+            backSpeed: 50
+          })
+        } else {
+          document.getElementById("subtitle").innerHTML = '愿始终是少年敢笑敢言'
+        }
+      </script>
+
+      <script>
+          function page(obj){
+              $("[name = 'page']").val($(obj).data("page"));
+              loaddata();
+              $(window).scrollTo($('#main'),500);
+          }
+
+          function loaddata(){
+              $('#right-bar').load(/*[[@{/publishBlogs}]]*/"/publishBlogs" ,{
+                  page : $("[name = 'page']").val(),
+              });
+          }
+     </script>
+    </body>
+</html>
+

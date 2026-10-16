@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索结果</title>
+  <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+  <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}">
+  <link rel="stylesheet" href="../static/css/footer.css" th:href="@{/css/footer.css}">
+  <link rel="stylesheet" href="../static/css/header.css" th:href="@{/css/header.css}">
+  <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+  <link rel="stylesheet" href="../static/css/search.css" th:href="@{/css/search.css}">
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+
+
+</head>
+
+<body>
+<!-- 移动端的侧边栏 -->
+<div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+  <div class="item" align="center">
+    <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+  </div>
+  <div class="item attached">
+    <div class="mobile_post_data">
+      <div class="mobile_data_item is-center">
+        <div class="mobile_data_link">
+          <a href="#">
+            <div class="headline">Articles</div>
+            <div class="length_num">10</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile_data_item is-center">
+        <div class="mobile_data_link">
+          <a href="#">
+            <div class="headline">Tags</div>
+            <div class="length_num">2</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile_data_item is-center">
+        <div class="mobile_data_link">
+          <a href="#">
+            <div class="headline">Categories</div>
+            <div class="length_num">6</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="item site-icon" href="home.html">
+    <span><i class="home icon"></i>首页</span>
+  </a>
+  <a class="item site-icon" href="archive.html">
+    <span><i class="box icon"></i>归档</span>
+  </a>
+  <a class="item site-icon" href="types.html">
+    <span><i class="tags icon"></i>分类</span>
+  </a>
+  <a class="item site-icon" href="message.html">
+    <span><i class="comment icon"></i>留言</span>
+  </a>
+  <a class="item site-icon" href="friend-links.html">
+    <span><i class="user plus icon"></i>友链</span>
+  </a>
+  <a href="about.html" class="item site-icon" >
+    <span><i class="user icon"></i>关于 我</span>
+  </a>
+  <a href="aboutWeb.html" class="item site-icon" >
+    <span><i class="laptop icon"></i>关于 网站</span>
+  </a>
+</div>
+
+<!-- 加载动画 -->
+<div th:replace="fragments :: loading-animate" class="loader-wrapper">
+  <img src="../static/images/loading.gif">
+</div>
+
+<!--SEARCH-->
+<div th:replace="fragments :: search" class="ui fullscreen modal" id="search">
+  <i class="large m-white close icon"></i>
+  <div class="ui container">
+    <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+      <div class="ui large search">
+        <div class="ui icon input">
+          <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+          <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+        </div>
+        <div class="results"></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pusher" style="position: relative;">
+  <canvas id="c" style="position: fixed; z-index: -1;"></canvas>
+
+  <div id="header">
+    <!-- 导航栏 -->
+    <nav class="m-shadow-header" id="nav">
+
+      <div class="ui stackable grid">
+
+        <div class="four wide column" align="center" >
+          <div class="site-top" id="nav-logo">
+            <div class="site-logo">
+                <span class="site-logo-title m-mobile-site-logo-title">
+                  <a href="home.html" alt="十二" class="">
+                    <span class="sakuraso">十二</span>
+                    <span class="no">の</span>
+                    <span class="shironeko">世界</span>
+                  </a>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eight wide column m-mobile-hide" align="center" id="nav-middle">
+          <div id="nav-menu">
+            <div class="ui inverted stackable secondary menu">
+              <a href="home.html" th:href="@{/}" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+              <a href="types.html" th:href="@{/types}" class="item  shake"><i class="tags icon"></i>分类</a>
+              <a href="message.html" th:href="@{/message}" class="item pulse"><i class="comment icon"></i>留言</a>
+              <a href="friend-links.html" th:href="@{/friend-links}" class="item  tada"><i class="user plus icon"></i>友链</a>
+              <a href="archives.html" th:href="@{/archives}" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+              <a href="album.html" th:href="@{/album}" class="item  swing"><i class="picture icon"></i>音乐</a>
+              <a href="about.html" th:href="@{/aboutme}" class="item flash" ><i class="user icon m-mobile-hide"></i>关于</a>
+
+<!--              <div class="item">-->
+<!--                <div class="ui dropdown">-->
+<!--                  <div class="text">-->
+<!--                    关于-->
+<!--                  </div>-->
+<!--                  <i class="dropdown icon"></i>-->
+<!--                  <div class="menu">-->
+<!--                    <a href="about.html" th:href="@{/aboutme}" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>-->
+<!--                    <a href="aboutWeb.html" th:href="@{/aboutWeb}" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+
+        <div class="four wide column m-mobile-hide" id="nav-right">
+          <!--login-->
+          <div id="login">
+            <a href="admin/login.html" th:href="@{/admin/login}" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+          </div>
+          <!--search-->
+          <div class="ui search">
+            <i class="m-white big sistrix link icon"></i>
+          </div>
+
+        </div>
+      </div>
+
+      <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+        <i class="sidebar icon"></i>
+      </a>
+    </nav>
+  </div>
+
+  <div id="main" style="position: relative;">
+    <div class="ui m-container">
+      <div class="ui m-container-ssmall" id="right-bar">
+          <div class="ui segment" th:unless="${#arrays.length(page.content)!=0}">
+            <div class="ui container">
+              <div class="ui header" style="color:dimgrey;">
+                <span>众里寻他千百度，可以看看这些先 &nbsp;(￣ε(#￣) ヽ(ﾟДﾟ*)</span>
+              </div>
+              <div class="item" th:each="blog,iterStat : ${recommendBlogs}">
+                <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" class="item"><span style="font-size: 16px; letter-spacing: 2px" th:text="| ${iterStat.count}、${blog.title} |">1、我的个人博客来了！！</span></a>
+              </div>
+            </div>
+          </div>
+
+        <div th:fragment="SearchBlogList">
+          <input type="hidden" name="page">
+          <input type="hidden" name="query" th:value="${query}">
+          <div class="post-item ui stackable grid" style="margin-bottom: 2rem !important;" th:each="blog : ${page.content}" >
+              <div class="seven wide column post-img-box">
+                <div class="img-box left-radius m-border-radius">
+                  <a href="blog.html" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}">
+                    <img src="../static/images/bg-image/bg.jpg" th:src="@{${blog.blogPic}}" alt="" class="post-img lazy">
+                  </a>
+                </div>
+              </div>
+              <div class="nine wide column middle aligned">
+                <div class="post-article-info">
+                  <a href="blog.html" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" title="我的个人博客来了！！" th:text="${blog.title}" class="article-title">我的个人博客来了！！ </a>
+                  <div class="content" th:text="${blog.description}">我的个人网站终于搭好了，希望大家多多关照</div>
+                  <div class="ui horizontal link list">
+                    <div class="item">
+                      <time datetime="2021-11-25">
+                        <i class="calendar alternate outline icon"></i>
+                        <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-11-25</span>
+                      </time>
+                    </div>
+                    <div class="item">
+                      <a href="about.html" th:href="@{/aboutme}">
+                        <i class="user outline icon"></i>
+                        <span th:text="${blog.user.aliasname}">Alex</span>
+                      </a>
+                    </div>
+                    <div class="item">
+                      <i class="eye icon"></i>
+                      <span th:text="${blog.views}">100</span>
+                    </div>
+
+                  </div>
+                  <div class="m-padded-tb-small">
+                    <div class="ui teal large label">
+                      <span th:text="${blog.flag}">原创</span>
+                    </div>
+                    <div class="ui blue large label">
+                      <span th:text="${blog.type.typeName}">生活随笔</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="ui basic segment" align="center" id="pagination">
+              <div class="ui pagination menu" th:if="${page.totalPages}>1" >
+                <a class="item" th:text="${i}" id="page-btn" th:attr="data-page=${i}-1" onclick="page(this)" th:each="i : ${#numbers.sequence(1,page.totalPages)}">
+                  1
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div th:replace="fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+
+</div>
+
+<!--/*/<th:block th:replace="fragments :: page-script">/*/-->
+<!-- loading gif -->
+<script type="text/javascript">
+  $(window).on('load',function(){
+    $('.loader-wrapper').fadeOut("normal")
+  });
+</script>
+<!-- 页尾效果 -->
+<script src="../static/js/footer.js" ></script>
+<script src="../static/js/snow.js" ></script>
+<!-- 下拉栏 -->
+<script type="text/javascript">
+  $(".ui.dropdown").dropdown();
+</script>
+<!-- 移动端的菜单显示 -->
+<script>
+  $('#menu-show').click(function(){
+    $('.ui.sidebar')
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('toggle');
+  })
+</script>
+<!-- 点击出现文字效果 -->
+<script src="../static/js/font.js" ></script>
+<!-- 进入网页的特效 -->
+  <script>
+  $('#nav')
+          .transition({
+            animation  : 'fade in',
+            duration   : '1.75s',
+          });
+  $('.scroll-down-bar')
+          .transition({
+            animation  : 'fade down in',
+            duration   : '1.25s',
+          });
+
+  $('#site-info')
+          .transition({
+            animation: 'fade in',
+            duration : '1.75s'
+          })
+</script>
+<!-- 滚动条下滑的导航栏出现隐藏 -->
+<script src="../static/js/head.js" ></script>
+<script>
+  (function () {
+    var header = document.querySelector("#nav");
+
+    var headroom = new Headroom(header, {
+      offset: 60,
+      tolerance: 0,
+      classes: {
+        initial: "headroom",
+        pinned: "headroom--pinned",
+        unpinned: "headroom--unpinned",
+        top:"headroom--top"
+      }
+    });
+    headroom.init();
+
+  })();
+</script>
+<!--/*/</th:block>/*/-->
+<script type="text/javascript">
+  $(document).ready(function() {
+    var canvas = document.getElementById("c");
+    var ctx = canvas.getContext("2d");
+    var c = $("#c");
+    var w,h;
+    var pi = Math.PI;
+    var all_attribute = {
+      num:10,            			 // 个数
+      start_probability:0.1,		     // 如果数量小于num，有这些几率添加一个新的
+      radius_min:1,   			     // 初始半径最小值
+      radius_max:2,   			     // 初始半径最大值
+      radius_add_min:.3,               // 半径增加最小值
+      radius_add_max:.5,               // 半径增加最大值
+      opacity_min:0.3,                 // 初始透明度最小值
+      opacity_max:0.5, 				 // 初始透明度最大值
+      opacity_prev_min:.003,            // 透明度递减值最小值
+      opacity_prev_max:.005,            // 透明度递减值最大值
+      light_min:40,                 // 颜色亮度最小值
+      light_max:70,                 // 颜色亮度最大值
+    };
+    var style_color = find_random(0,360);
+    var all_element =[];
+    window_resize();
+    function start(){
+      window.requestAnimationFrame(start);
+      style_color+=.1;
+      ctx.fillStyle = 'hsl('+style_color+',100%,97%)';
+      ctx.fillRect(0, 0, w, h);
+      if (all_element.length < all_attribute.num && Math.random() < all_attribute.start_probability){
+        all_element.push(new ready_run);
+      }
+      all_element.map(function(line) {
+        line.to_step();
+      })
+    }
+    function ready_run(){
+      this.to_reset();
+    }
+    ready_run.prototype = {
+      to_reset:function(){
+        var t = this;
+        t.x = find_random(0,w);
+        t.y = find_random(0,h);
+        t.radius = find_random(all_attribute.radius_min,all_attribute.radius_max);
+        t.radius_change = find_random(all_attribute.radius_add_min,all_attribute.radius_add_max);
+        t.opacity = find_random(all_attribute.opacity_min,all_attribute.opacity_max);
+        t.opacity_change = find_random(all_attribute.opacity_prev_min,all_attribute.opacity_prev_max);
+        t.light = find_random(all_attribute.light_min,all_attribute.light_max);
+        t.color = 'hsl('+style_color+',100%,'+t.light+'%)';
+      },
+      to_step:function(){
+        var t = this;
+        t.opacity -= t.opacity_change;
+        t.radius += t.radius_change;
+        if(t.opacity <= 0){
+          t.to_reset();
+          return false;
+        }
+        ctx.fillStyle = t.color;
+        ctx.globalAlpha = t.opacity;
+        ctx.beginPath();
+        ctx.arc(t.x,t.y,t.radius,0,2*pi,true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+    function window_resize(){
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+    }
+    $(window).resize(function(){
+      window_resize();
+    });
+    function find_random(num_one,num_two){
+      return Math.random()*(num_two-num_one)+num_one;
+    }
+    (function() {
+      var lastTime = 0;
+      var vendors = ['webkit', 'moz'];
+      for(var xx = 0; xx < vendors.length && !window.requestAnimationFrame; ++xx) {
+        window.requestAnimationFrame = window[vendors[xx] + 'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[xx] + 'CancelAnimationFrame'] ||
+                window[vendors[xx] + 'CancelRequestAnimationFrame'];
+      }
+
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = function(callback, element) {
+          var currTime = new Date().getTime();
+          var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+          var id = window.setTimeout(function() {
+            callback(currTime + timeToCall);
+          }, timeToCall);
+          lastTime = currTime + timeToCall;
+          return id;
+        };
+      }
+      if (!window.cancelAnimationFrame) {
+        window.cancelAnimationFrame = function(id) {
+          clearTimeout(id);
+        };
+      }
+    }());
+    start();
+  });
+</script>
+
+<script>
+  function page(obj){
+    $("[name = 'page']").val($(obj).data("page"));
+    loaddata();
+    $(window).scrollTo($('#main'),500);
+  }
+
+  function loaddata(){
+    $('#right-bar').load(/*[[@{/searchBlogs}]]*/"/searchBlogs" ,{
+      page : $("[name = 'page']").val(),
+      query : $("[name = 'query']").val()
+    });
+  }
+</script>
+
+</body>
+</html>
+

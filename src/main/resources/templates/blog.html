@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${blog.title}">我的个人博客完成了！</title>
+
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}"> 
+    <link rel="stylesheet" href="../static/css/footer.css" th:href="@{/css/footer.css}"> 
+    <link rel="stylesheet" href="../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+    <script src="../static/lib/qqFace/jquery.qqFace.js" th:src="@{/lib/qqFace/jquery.qqFace.js}"></script>
+
+  </head>
+  <body>
+    <!-- 移动端的侧边栏 -->
+    <div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+      <div class="item" align="center">
+        <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+      </div>
+      <div class="item attached">
+        <div class="mobile_post_data">
+          <div class="mobile_data_item is-center">
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Articles</div>
+                <div class="length_num">10</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mobile_data_item is-center">
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Tags</div>
+                <div class="length_num">2</div>
+              </a>
+            </div>
+          </div>
+
+          <div class="mobile_data_item is-center">
+            <div class="mobile_data_link">
+              <a href="#">
+                <div class="headline">Categories</div>
+                <div class="length_num">6</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="item site-icon" href="home.html">
+        <span><i class="home icon"></i>首页</span>
+      </a>
+      <a class="item site-icon" href="archive.html">
+        <span><i class="box icon"></i>归档</span>
+      </a>
+      <a class="item site-icon" href="types.html">
+        <span><i class="tags icon"></i>分类</span>
+      </a>
+      <a class="item site-icon" href="message.html">
+        <span><i class="comment icon"></i>留言</span>
+      </a>
+      <a class="item site-icon" href="friend-links.html">
+        <span><i class="user plus icon"></i>友链</span>
+      </a>
+      <a href="about.html" class="item site-icon" >
+        <span><i class="user icon"></i>关于 我</span>
+      </a>
+      <a href="aboutWeb.html" class="item site-icon" >
+        <span><i class="laptop icon"></i>关于 网站</span>
+      </a>
+    </div>
+
+    <!-- 加载动画 -->
+    <div th:replace="fragments :: loading-animate" class="loader-wrapper">
+      <img src="../static/images/loading.gif">
+    </div>
+
+    <div class="ui fullscreen modal" id="search">
+      <i class="large m-white close icon"></i>
+      <div class="ui container">
+        <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+          <div class="ui large search">
+            <div class="ui icon input">
+              <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+              <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+            </div>
+            <div class="results"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="pusher" style="position: relative;">
+      <canvas id="c" style="position: fixed; z-index: -1;"></canvas>
+
+      <div id="header">
+        <!-- 导航栏 -->
+        <nav class="m-shadow-header" id="nav">
+
+          <div class="ui stackable grid">
+
+            <div class="three wide column" align="center" id="nav-left">
+              <div class="site-top" id="nav-logo">
+                <div class="site-logo">
+                  <span class="site-logo-title m-mobile-site-logo-title">
+                    <a href="home.html" th:href="@{/}" alt="十二" class="">
+                      <span class="sakuraso">十二</span>
+                      <span class="no">の</span>
+                      <span class="shironeko">世界</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div >
+            
+            <div class="ten wide column m-mobile-hide" align="center" id="nav-middle">
+              <div id="nav-menu">
+                <div class="ui inverted stackable secondary menu">
+                  <a href="home.html" th:href="@{/}" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                  <a href="types.html" th:href="@{/types}" class="item  shake"><i class="tags icon"></i>分类</a>
+                  <a href="message.html" th:href="@{/message}" class="item pulse"><i class="comment icon"></i>留言</a>
+                  <a href="friend-links.html" th:href="@{/friend-links}" class="item  tada"><i class="user plus icon"></i>友链</a>
+                  <a href="archives.html" th:href="@{/archives}" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+                  <a href="album.html" th:href="@{/album}" class="item swing"><i class="picture icon"></i>图册</a>
+                  <div class="item">
+                        <div class="ui dropdown">
+                          <div class="text">
+                            关于
+                          </div>
+                          <i class="dropdown icon"></i>
+                          <div class="menu">
+                            <a href="about.html" th:href="@{/aboutme}" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>
+                            <a href="aboutWeb.html" th:href="@{/aboutWeb}" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>
+                          </div>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>  
+
+            <div class="three wide column m-mobile-hide" id="nav-right">
+              <!--login-->
+              <div id="login">
+                <a href="admin/login.html" th:href="@{/admin/login}" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+              </div>
+              <!--search-->
+              <div class="ui search">
+                <i class="m-white big sistrix link icon"></i>
+              </div>
+
+            </div>
+        </div>
+
+          <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+            <i class="sidebar icon"></i>
+          </a>
+        </nav>
+
+        <header id="page-header" class="header-image" th:style="'background-image: url(' + ${blog.blogPic} + ');'">
+          <div id="site-info">
+            <h1  id="site-title" th:text="${blog.title}">关于我的个人博客</h1>
+          </div>
+
+          <div class="scroll-down-bar">
+              <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+          </div>
+
+        </header>
+      </div>
+
+
+      <div id="main">
+        <div class="ui m-container m-padded-tb-large">
+          <div class="ui segment" id="post-content">
+              <!-- 内容-->
+              <div class="content typo typo-selection m-padded-lr-large m-margin-top-large" id="p-content" th:utext="${blog.content}">
+                <h2 id="p-title">关于我的个人博客</h2>
+                <p>历时三个月，我的个人博客终于完成了，从一开始的一无所知，到现在能自己完成了自己的个人博客，感觉自己收获巨大。</p>
+                <p>同时，我也觉得自己还有很多的不足之处需要完善，还需要不断的改变。一下的内容是我在写博客网站的一些感想感悟。内容较多，浏览需谨慎！！</p>
+                <h3 id="p-sub-title-1">建站初心💗</h3>
+                <p>其实搭建一个属于自己的个人网站是很早就有的想法了，但是真正开始却是大三的上学期，大一到大三这几年一直被各种各样的事物所耽搁，知道开始学习了相关的软件开发课程才开始正式搭建博客网站。
+                一开始的话也是很迷茫的，不知道怎么搭建，所以面向了GitHub编程。看大佬们的博客网站学习，后面在B站找到了一个<a href="#">spring boot搭建网站的教程</a>。
+                我觉得还蛮不错就跟着学了。
+                </p>
+                <h3 id="p-sub-title-2">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+                <p>网站的前端设计采用了semantic-ui组件，后端使用了spring boot框架进行开发，风格是参考了无数大佬后最后敲定下来的，希望各位大佬轻喷🙏
+                  关于前端的代码和后端的代码已经放到了GitHub上面了，有需要可以自取，留个star可好。
+                </p>
+                <h3 id="p-sub-title-3">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+                <h3 id="p-sub-title-4">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+                <h3 id="p-sub-title-5">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+                <h3 id="p-sub-title-6">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+                <h3 id="p-sub-title-7">建站过程💔</h3>
+                <p>一开始以为搭建一个网站会比较快，但是我发现要疯狂的修改o(￣┰￣*)ゞ，特别是搭建的过程中我经常去看别人的网站。
+                  因为大佬的网站有很多学习的地方，一旦你发现好的地方你又会开始修改前面的内容，不断推翻然后重建。所以我建议先确定好主题风格，
+                  然后一次性搭建好整个网站的框架，不要学我一边搭一边想。
+                </p>
+
+              
+              
+              </div>
+
+              <!--目录生成-->
+              <div class="right ui rail m-padded" style="width: 250px !important; height: auto !important;">
+                <div class="ui sticky" style="padding: 60px 14px 0 14px;">
+                  <div class="header m-margin-tb" align='center'>
+                    <div class="ui header" style="font-size: 20px;line-height: 28px">
+                      <i class="large list alternate outline icon"></i>目录
+                    </div>
+                  </div>
+                  <div class="Categories">
+                    
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui divider m-margin-top-large m-margin-lr"></div>
+
+              <div class="post-tag m-padded-lr-large m-margin-top-large">
+                <div class="ui horizontal link list">
+                  <div class="item">
+                    <time datetime="2021-11-25">
+                      <i class="calendar alternate outline icon"></i>
+                      <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-11-25</span>
+                    </time>
+                  </div>
+                  <div class="item">
+                    <a href="about.html" th:href="@{/aboutme}">
+                      <i class="user outline icon"></i>
+                      Alex
+                    </a>
+                  </div>
+                  <div class="item">
+                    <i class="eye icon"></i>
+                    <span th:text="${blog.views}">1000</span>
+                  </div>      
+                  <div class="item">
+                    <i class="comment alternate outline icon"></i>
+                    <span th:text="${#arrays.length(commentArray)}">1000</span>
+                  </div>
+                  <div class="item" th:each="tag : ${blog.tags}">
+                    <i class="tag icon"></i>
+                    <span th:text="${tag.tagName}">java</span>
+                  </div>
+                  <div class="item">
+                    <div class="ui blue label">
+                      <span th:text="${blog.type.typeName}">生活随笔</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--转载声明-->
+              <div class="post-note m-padded-lr-large m-margin-top-large" th:if="${blog.shareStatement}">
+                <div>
+                  <span>本文作者：</span>
+                  <a href="#" th:href="@{/}">Alex</a>
+                </div>
+                <div>
+                  <span>本文连接：</span>
+                  <a href="">http://127.0.0.1:5501/templates/blog1.html#</a>
+                </div>
+                <div>
+                  <span>版权声明：</span>
+                  <span>本站文章除特别声明外，均采用 CC BY-NC-SA 3.0 CN 协议进行许可</span>
+                </div>
+              </div>
+
+              <!--评论-->
+              <div class="post-comment m-padded-lr-large m-margin-top-large" th:if="${blog.commentAble}">
+                <div id="comment-container"  class="ui basic segment">
+                  <div th:fragment="commentList">
+                    <div class="ui comments" style="max-width: 100%;">
+                      <div class="ui dividing header" th:onclick="|toMessage()|"><a style="color: black" id="scroll-To-Message">评论</a></div>
+                      <div class="comment" th:each="comment : ${comments}">
+                        <a class="avatar">
+                          <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
+                        </a>
+                        <div class="content">
+                          <a class="author" >
+                            <span th:text="${comment.nickname}">Matt</span>
+                            <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${comment.adminComment}">博主</div>
+                          </a>
+                          <div class="metadata">
+                            <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                          </div>
+                          <div class="text" th:utext="${comment.content}">
+                            How artistic!
+                          </div>
+                          <div class="actions">
+                            <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回复</a>
+                          </div>
+                        </div>
+                        <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                          <div class="comment" th:each="reply : ${comment.replyComments}">
+                            <a class="avatar">
+                              <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                            </a>
+                            <div class="content">
+                              <a class="author" >
+                                <span th:text="${reply.nickname}">小红</span>
+                                <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${reply.adminComment}">博主</div>
+                                &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
+                              </a>
+                              <div class="metadata">
+                                <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                              </div>
+                              <div class="text" th:utext="${reply.content}">
+                                How artistic!
+                              </div>
+                              <div class="actions">
+                                <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="comment-form" class="ui form">
+                  <input type="hidden" name="blog.id" th:value="${blog.id}">
+                  <input type="hidden" name="parentComment.id" value="-1">
+                  <div class="field">
+                    <textarea name="content" id="content" placeholder="请输入评论信息..."></textarea>
+                  </div>
+                  <div class="fields">
+                    <div class="field m-mobile-wide m-margin-bottom-small">
+                      <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.aliasname}">
+                      </div>
+                    </div>
+                    <div class="field m-mobile-wide m-margin-bottom-small">
+                      <div class="ui left icon input">
+                        <i class="mail icon"></i>
+                        <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
+                      </div>
+                    </div>
+                    <div class="field m-margin-bottom-small m-mobile-wide">
+                      <button type="button" class="ui orange button m-mobile-wide emotion"><i class="heart outline icon"></i>表情</button>
+                    </div>
+                    <div class="field m-margin-bottom-small m-mobile-wide">
+                      <button id="commentpost-btn" type="button" class="ui blue button m-mobile-wide"><i class="edit icon"></i>发布</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- footer-->
+      <footer th:replace="fragments :: footer">
+        <div id="footer">
+          <div class="banner">
+              <div class="view">
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                  class="morning"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                  class="afternoon"
+                />
+                <img
+                  src="../static/images/bilibili-tree/snow.png"
+                  class="ball"
+                />
+                <video autoplay loop muted class="evening">
+                  <source
+                    src="../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                    type="video/webm"
+                  />
+                </video>
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                  class="window-cover"
+                />
+              </div>
+              <div class="tree">
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                  class="morning"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                  class="afternoon"
+                />
+                <img
+                  src="../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                  class="evening"
+                />
+              </div>
+          </div>
+        </div>
+      </footer>
+
+      <!--小火箭-->
+      <div th:replace="fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+      $('.ui.search').click(function (){
+        $('.fullscreen.modal').modal('show');
+      })
+    </script>
+
+    <!-- 自动生成目录 -->
+    <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script>
+      tocbot.init({
+        tocSelector:'.Categories',
+        contentSelector:'#p-content',
+        headingSelector:'h2, h3, h4'
+      }); 
+    </script>
+    <script>
+      $('.ui.sticky')
+        .sticky({
+          context: '#main',
+        });
+    </script>
+    <!-- 页尾效果 -->
+    <script src="../static/js/footer.js" th:src="@{/js/footer.js}"></script>
+    <script src="../static/js/snow.js" th:src="@{/js/snow.js}"></script>
+    <!-- 下拉栏 -->
+    <script type="text/javascript">
+      $(".ui.dropdown").dropdown();
+    </script>
+    <!-- 移动端的菜单显示 -->
+    <script type="text/javascript">
+      $('#menu-show').click(function(){
+        $('.ui.sidebar')
+        .sidebar('setting', 'transition', 'overlay')
+        .sidebar('toggle');
+      })
+    </script>
+    <!-- 点击出现文字效果 -->
+    <script src="../static/js/font.js" th:src="@{/js/font.js}"></script>
+    <!-- scroll-down-bar的js实现 -->
+    <script src="../static/js/Scroll.js" th:src="@{/js/Scroll.js}"></script>
+    <!-- live2d模型 -->
+    <script src="../static/live2dw/lib/L2Dwidget.min.js" th:src="@{/live2dw/lib/L2Dwidget.min.js}"></script>
+    <script>
+      L2Dwidget.init({
+        "model":{jsonPath:"[[@{/live2dw/assets/asuna_04.model.json}]]"},
+        "display":{"position":"left","width":140,"height":240},
+        "mobile":{"show":false},
+        "log":false,
+        "pluginJsPath":"[[@{/live2dw/lib/}]]",
+        "pluginModelPath":"[[@{/live2dw/assets/}]]",
+        "pluginRootPath":"[[@{/live2dw/}]]",
+        "tagMode":false
+      })
+    </script>
+    <!-- 进入网页的特效 -->
+    <script type="text/javascript">
+      $('#nav').transition({
+        animation  : 'fade in',
+        duration   : '1.75s',
+      });
+      $('.scroll-down-bar').transition({
+        animation  : 'fade down in',
+        duration   : '1.25s',
+      });
+    </script>
+    <!-- 滚动条下滑的导航栏出现隐藏 -->
+    <script src="../static/js/head.js" th:src="@{/js/head.js}"></script>
+    <script type="text/javascript" >
+      (function () {
+      var header = document.querySelector("#nav");
+      var headroom = new Headroom(header, {
+        offset: 60,
+        tolerance: 0,
+        classes: {
+          initial: "headroom",
+          pinned: "headroom--pinned",
+          unpinned: "headroom--unpinned",
+          top:"headroom--top"
+          
+        }
+      });
+      var dTop = document.body.scrollTop || document.documentElement.scrollTop;
+      var mto = document.getElementById('main').scrollTop;
+      headroom.init();
+    
+    })();
+
+    </script>
+    <!-- loading gif -->     
+    <script type="text/javascript">
+      $(window).on('load',function(){
+        $('.loader-wrapper').fadeOut("normal")
+      });
+    </script>
+    <!-- 背景动画 -->
+    <script type="text/javascript" th:inline="javascript">
+      $(document).ready(function() {			
+              var canvas = document.getElementById("c");
+        var ctx = canvas.getContext("2d");
+        var c = $("#c");
+        var w,h;
+        var pi = Math.PI;
+        var all_attribute = {
+          num:10,            			 // 个数
+          start_probability:0.1,		     // 如果数量小于num，有这些几率添加一个新的     		     
+          radius_min:1,   			     // 初始半径最小值
+          radius_max:2,   			     // 初始半径最大值
+          radius_add_min:.3,               // 半径增加最小值
+          radius_add_max:.5,               // 半径增加最大值
+          opacity_min:0.3,                 // 初始透明度最小值
+          opacity_max:0.5, 				 // 初始透明度最大值
+          opacity_prev_min:.003,            // 透明度递减值最小值
+          opacity_prev_max:.005,            // 透明度递减值最大值
+          light_min:40,                 // 颜色亮度最小值
+          light_max:70,                 // 颜色亮度最大值
+        };
+        var style_color = find_random(0,360);  
+        var all_element =[];
+        window_resize();
+        function start(){
+          window.requestAnimationFrame(start);
+          style_color+=.1;
+          ctx.fillStyle = 'hsl('+style_color+',100%,97%)';
+          ctx.fillRect(0, 0, w, h);
+          if (all_element.length < all_attribute.num && Math.random() < all_attribute.start_probability){
+            all_element.push(new ready_run);
+          }
+          all_element.map(function(line) {
+            line.to_step();
+          })
+        }
+        function ready_run(){
+          this.to_reset();
+        }
+        ready_run.prototype = {
+          to_reset:function(){
+            var t = this;
+            t.x = find_random(0,w);
+            t.y = find_random(0,h);
+            t.radius = find_random(all_attribute.radius_min,all_attribute.radius_max);
+            t.radius_change = find_random(all_attribute.radius_add_min,all_attribute.radius_add_max);
+            t.opacity = find_random(all_attribute.opacity_min,all_attribute.opacity_max);
+            t.opacity_change = find_random(all_attribute.opacity_prev_min,all_attribute.opacity_prev_max);
+            t.light = find_random(all_attribute.light_min,all_attribute.light_max);
+            t.color = 'hsl('+style_color+',100%,'+t.light+'%)';
+          },
+          to_step:function(){
+            var t = this;
+            t.opacity -= t.opacity_change;
+            t.radius += t.radius_change;
+            if(t.opacity <= 0){
+              t.to_reset();
+              return false;
+            }
+            ctx.fillStyle = t.color;
+            ctx.globalAlpha = t.opacity;
+            ctx.beginPath();
+            ctx.arc(t.x,t.y,t.radius,0,2*pi,true);
+            ctx.closePath();
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+        }
+        function window_resize(){
+          w = window.innerWidth;
+          h = window.innerHeight;
+          canvas.width = w;
+          canvas.height = h;
+        }
+        $(window).resize(function(){
+          window_resize();
+        });
+        function find_random(num_one,num_two){
+          return Math.random()*(num_two-num_one)+num_one;
+        }
+        (function() {
+          var lastTime = 0;
+          var vendors = ['webkit', 'moz'];
+          for(var xx = 0; xx < vendors.length && !window.requestAnimationFrame; ++xx) {
+            window.requestAnimationFrame = window[vendors[xx] + 'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[xx] + 'CancelAnimationFrame'] ||
+                            window[vendors[xx] + 'CancelRequestAnimationFrame'];
+          }
+        
+          if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = function(callback, element) {
+              var currTime = new Date().getTime();
+              var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+              var id = window.setTimeout(function() {
+                callback(currTime + timeToCall);
+              }, timeToCall);
+              lastTime = currTime + timeToCall;
+              return id;
+            };
+          }
+          if (!window.cancelAnimationFrame) {
+            window.cancelAnimationFrame = function(id) {
+              clearTimeout(id);
+            };
+          }
+        }());
+        start();
+          });
+    </script>
+
+    <!--评论提交功能-->
+    <script type="text/javascript" th:inline="javascript">
+
+      $('.ui.form').form({
+        fields: {
+          title: {
+            identifier: 'content',
+            rules: [{
+              type: 'empty',
+              prompt: '请输入评论内容'
+            }
+            ]
+          },
+          content: {
+            identifier: 'nickname',
+            rules: [{
+              type: 'empty',
+              prompt: '请输入名称'
+            }]
+          },
+          type: {
+            identifier: 'email',
+            rules: [{
+              type: 'email',
+              prompt: '请填写正确的邮箱地址'
+            }]
+          }
+        }
+      });
+
+      $(function () {
+        $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"/comments/29");
+      });
+
+      $('#commentpost-btn').click(function () {
+        const boo = $('.ui.form').form('validate form');
+        if (boo) {
+          postData();
+        } else {
+          console.log('校验失败');
+        }
+      });
+
+      function postData() {
+        $("#comment-container").load(/*[[@{/comments}]]*/"",{
+          "parentComment.id" : $("[name='parentComment.id']").val(),
+          "blog.id" : $("[name='blog.id']").val(),
+          "nickname": $("[name='nickname']").val(),
+          "email"   : $("[name='email']").val(),
+          "content" : $("[name='content']").val()
+        },function (responseTxt, statusTxt, xhr) {
+          $(window).scrollTo($('#comment-container'),500);
+          clearContent();
+        });
+      }
+
+      function clearContent() {
+        $("[name='nickname']").val('');
+        $("[name='email']").val('');
+        $("[name='content']").val('');
+        $("[name='parentComment.id']").val(-1);
+        $("[name='content']").attr("placeholder", "请输入评论信息...");
+      }
+
+      function reply(obj) {
+        const commentId = $(obj).data('commentid');
+        const commentNickname = $(obj).data('commentnickname');
+        $("[name='content']").attr("placeholder", "@"+commentNickname).focus();
+        $("[name='parentComment.id']").val(commentId);
+        $(window).scrollTo($('#comment-form'),500);
+      }
+    </script>
+
+    <script type="text/javascript" th:if="${blog.commentAble}">
+
+      $(function(){
+
+        $('.emotion').qqFace({
+
+          assign:'content',
+
+          path:"[[@{/lib/qqFace/arclist/}]]"	//表情存放的路径
+
+        });
+      });
+
+    </script>
+
+    <!--点击跳转到留言区-->
+    <script th:inline="javascript">
+      function toMessage(){
+        $(window).scrollTo($('#comment-form'),500);
+      }
+    </script>
+  </body>
+</html>

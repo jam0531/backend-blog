@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="十二的个人博客, 十二的留言板">
+    <meta name="keyword" content="十二, 十二的留言板">
+    <meta name="author" content="十二, Alex">
+    <title>归档</title>
+    <link href="../../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../../static/css/public.css" th:href="@{/css/public.css}">
+    <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+
+    <link rel="stylesheet" href="../../static/css/picture.css" th:href="@{/css/music.css}">
+    <link rel="stylesheet" href="../../static/lib/semantic/semantic.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+
+</head>
+
+<body>
+
+<!-- 加载动画 -->
+<div th:fragment="loading-animate" class="loader-wrapper">
+    <img src="../../static/images/loading.gif" th:src="@{/images/loading.gif}">
+</div>
+
+
+<div class="pusher">
+
+    <div th:fragment="header(h1)" id="header">
+        <!-- 导航栏 -->
+        <nav class="m-shadow-header" id="nav">
+
+            <div class="ui stackable grid">
+
+                <div class="three wide column" align="center" >
+                    <div class="site-top" id="nav-logo">
+                        <div class="site-logo">
+                  <span class="site-logo-title m-mobile-site-logo-title">
+                    <a href="index.html" th:href="@{/admin/index}" alt="十二" class="">
+                      <span class="sakuraso">管理</span>
+                      <span class="no">の</span>
+                      <span class="shironeko">界面</span>
+                    </a>
+                  </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ten wide column m-mobile-hide" align="center">
+                    <div id="nav-menu">
+                        <div class="ui inverted stackable secondary menu">
+                            <a href="../admin/index.html" th:href="@{/admin/index}" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                            <a href="../admin/blogs.html" th:href="@{/admin/blogs}" class="item  rubberBand"><i class="paper plane icon"></i>博客</a>
+                            <a href="../admin/tags.html" th:href="@{/admin/tags}" class="item shake"><i class="tags icon"></i>标签</a>
+                            <a href="../admin/types.html" th:href="@{/admin/types}" class="item pulse"><i class="list alternate outline icon"></i>分类</a>
+                            <a href="../admin/friendlinks.html" th:href="@{/admin/friendlinks}" class="item  tada"><i class="user plus icon"></i>友链</a>
+                            <a href="../admin/pictures.html" th:href="@{/admin/pictures}" class="item  swing"><i class="image icon"></i>照片</a>
+                            <a href="../admin/notices.html" th:href="@{/admin/notices}" class="item  wobble"><i class="bullhorn icon"></i>公告</a>
+                            <a href="../admin/comments.html" th:href="@{/admin/comments}" class="item  shake"><i class="comment icon"></i>评论</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="three wide column m-mobile-hide" align="center">
+
+                    <div id="login_Admin">
+                        <div class="ui pointing dropdown">
+                            <div class="text m-padded-tb-small" >
+                                <img  src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/202201212026959.jpg" alt="" class="ui circular avatar image avatarImg" th:src="@{${session.user.avatar}}">
+                                <span class="m-white" th:text="${session.user.aliasname}">十二弟弟的博客</span>
+                            </div>
+                            <i class="dropdown icon m-white"></i>
+                            <div class="menu">
+                                <a class="item m-font-size-text-large" th:href="@{/admin/logout}">注销</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+                <i class="sidebar icon"></i>
+            </a>
+        </nav>
+
+        <header id="page-header" class="header-image">
+            <div id="site-info">
+                <h1 th:replace="${h1}" id="site-title">模板</h1>
+                <div id="site-subtitle">
+                    <span id="subtitle"></span>
+                    <span class="typed-cursor"></span>
+                </div>
+            </div>
+
+            <div class="scroll-down-bar">
+                <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+            </div>
+
+        </header>
+    </div>
+
+
+    <footer th:fragment="footer">
+        <div id="footer">
+            <div class="banner">
+                <div class="view">
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                            class="morning"
+                    />
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                            class="afternoon"
+                    />
+                    <img
+                            th:src="@{/iimages/bilibil-tree/snow.png}"
+                            src="../../static/iimages/bilibil-tree/snow.png"
+                            class="ball"
+                    />
+                    <video autoplay loop muted class="evening">
+                        <source
+                                th:src="@{/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm}"
+                                src="../../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                                type="video/webm"
+                        />
+                    </video>
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                            class="window-cover"
+                    />
+                </div>
+                <div class="tree">
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                            class="morning"
+                    />
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                            class="afternoon"
+                    />
+                    <img
+                            th:src="@{/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png}"
+                            src="../../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                            class="evening"
+                    />
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div th:fragment="backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+</div>
+
+
+<th:block th:fragment="page-script">
+    <!-- loading gif -->
+    <script type="text/javascript">
+        $(window).on('load',function(){
+            $('.loader-wrapper').fadeOut("normal")
+        });
+    </script>
+    <!-- 页尾效果 -->
+    <script src="../../static/js/footer.js" th:src="@{/js/footer.js}"></script>
+    <script src="../../static/js/snow.js" th:src="@{/js/snow.js}"></script>
+    <!-- 下拉栏 -->
+    <script type="text/javascript">
+        $(".ui.dropdown").dropdown();
+    </script>
+    <!-- 移动端的菜单显示 -->
+    <script>
+        $('#menu-show').click(function(){
+            $('.ui.sidebar')
+                .sidebar('setting', 'transition', 'overlay')
+                .sidebar('toggle');
+        })
+    </script>
+    <!-- 进入网页的特效 -->
+    <script>
+        $('#nav')
+            .transition({
+                animation  : 'fade in',
+                duration   : '1.75s',
+            });
+        $('.scroll-down-bar')
+            .transition({
+                animation  : 'fade down in',
+                duration   : '1.25s',
+            });
+
+        $('#site-info')
+            .transition({
+                animation: 'fade in',
+                duration : '1.75s'
+            })
+    </script>
+    <!-- 滚动条下滑的导航栏出现隐藏 -->
+    <script src="../../static/js/head.js" th:src="@{/js/head.js}"></script>
+    <script>
+        (function () {
+            var header = document.querySelector("#nav");
+
+            var headroom = new Headroom(header, {
+                offset: 60,
+                tolerance: 0,
+                classes: {
+                    initial: "headroom",
+                    pinned: "headroom--pinned",
+                    unpinned: "headroom--unpinned",
+                    top:"headroom--top"
+
+                }
+            });
+            headroom.init();
+
+        })();
+    </script>
+    <script src="../../static/js/font.js" th:src="@{/js/font.js}"></script>
+    <!-- scroll-down-bar的js实现 -->
+    <script src="../../static/js/Scroll.js" th:src="@{/js/Scroll.js}"></script>
+    <!-- 打字机效果 -->
+    <script src="../../static/lib/typed/typed.js" th:src="@{/lib/typed/typed.js}"></script>
+    <script>
+        $(".message .close").on('click',function (){
+            $(this).closest('.message')
+                .transition("fade");
+        });
+    </script>
+</th:block>
+
+<!-- 打字机文字 -->
+<Script>
+    var subtitleEffect = true
+    if (subtitleEffect) {
+        var typed = new Typed("#subtitle", {
+            strings: "音乐治愈人心".split(","),
+            startDelay: 300,
+            typeSpeed: 150,
+            //  loop: true,
+            backSpeed: 50
+        })
+    } else {
+        document.getElementById("subtitle").innerHTML = '愿始终是少年敢笑敢言'
+    }
+</Script>
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+a, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    color: black;
+    font-family: Mincho;
+}
+
+a{
+    text-decoration: none;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease
+}
+
+a:active, a:hover {
+    outline: 0;
+}
+
+body{
+    position: relative;
+}
+
+*.lazyloaded {
+    opacity: 1;
+    transition: all 0.4s;
+    transition-delay: 0.5s;
+}
+
+.site-header {
+    width: 18vw;
+    /* background: #E8EAED; */
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.album-site-logo{
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 20vh;
+    width: 100%;
+    cursor: pointer;
+}
+.album-site-logo img{
+    width: 100%;
+    height: 100%;
+}
+
+.site-name{
+    font-size: 28px;
+    background: linear-gradient(to right,lightskyblue, #436EEE);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    cursor: pointer;
+}
+
+.site-name a:hover{
+    background-color: transparent;
+}
+
+.album-site-logo:hover, .site-name:hover{
+    transition: all .3s ease;
+    filter: brightness(115%);
+    background-color: transparent;
+}
+
+@media only screen and (min-width: 769px){
+    .site-header {
+        position: absolute;
+        left: 0;
+        z-index: 1000;
+        padding-top: 0;
+    }
+    
+}
+
+@media only screen and (max-width: 768px){
+    .site-header {
+        background: #FFF0F5;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: right;
+        height: 66px !important;
+        width: 100vw !important;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .album-site-logo{
+        height: 100%;
+        width: auto;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .album-site-logo img{
+        width: 100%;
+        height: 100%;
+    }
+    .site-main {
+        height: auto;
+        width: 100vw;
+        margin: 0;
+    }
+    .site-main > div{
+        width: 100vw;
+        height: auto;
+    }
+    .site-main-headline{
+        font-size: 24px !important;
+    }
+
+    .site-main-instrutor text{
+        font-size: 18px !important;
+    }
+}
+
+.site-time-list{
+    margin: 50px auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    justify-content: center;
+}
+
+.site-time-list-item{
+    margin: auto;
+    height: 34px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #C4C7CC;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+ul {
+    display: block;
+    list-style-type: none;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
+}
+
+.site-time-list-item a {
+    width: 100%;
+    display: block;
+    padding: 5px 10px;
+    color: #8A9099;
+    transition: all .5s ease;
+}
+
+.site-time-list-item:hover a{
+    transition: all .1s ease-in;
+}
+
+.site-time-list-item a:hover{
+    background-color: #3379CC;
+    color: #E8EAED;
+}
+
+.site-main {
+    background:#FFF0F5;
+    overflow-x: hidden;
+    width: 82vw;
+    margin-left: 18vw;
+}
+
+@media only screen and (max-width: 768px){
+    .site-main {
+        background:#FFF0F5;
+        overflow-x: hidden;
+        height: auto;
+        width: 100vw;
+        margin: 0;
+    }
+    .site-main > div{
+        width: 100vw;
+        height: auto;
+    }
+    .site-main-headline{
+        font-size: 24px !important;
+    }
+
+    .site-main-instrutor text{
+        font-size: 18px !important;
+    }
+}
+
+.site-main-header{
+    height: 100vh;
+    width: 82vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.site-main-headline{
+    height: 10vh;
+    width: 82vw;
+    font-size: 48px;
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Mincho;
+}
+
+.site-main-instrutor{
+    height: 20vh;
+    width: 82vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Mincho;
+    font-size: 2rem;
+    line-height: 4rem;
+}
+
+@font-face {
+    font-family: Mincho; src: url("../ttf/HinaMincho-Regular.ttf")format("opentype");
+}
+
+.site-main-photolist{
+    position: relative;
+    width: 82vw;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.site-main-photo-item{
+    visibility: visible;
+    opacity: 1;
+    transition-property: transform, opacity;
+    transition-duration: 0.4s;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+}
+
+.site-main-photo-item > a {
+    display: block;
+    position: relative;
+}
+
+.site-main-photo-item > a img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+}
+
+.site-main-photo-item a:before{
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .55);
+    opacity: 0;
+    -webkit-transition: opacity .8s ease;
+    transition: opacity .8s ease;
+}
+
+.site-main-photo-item:hover > a:before{
+    opacity: 1;
+    -webkit-transition: opacity .5s ease;
+    transition: opacity .5s ease;
+}
+
+@media only screen and (min-width: 1280px)  {
+    .site-main-photo-item{
+        width: 25%;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 768px){
+    .site-main-photo-item{
+        width: 50%;
+        height: auto;
+    }
+}
+
+/*@media only screen and (max-width: 300px){*/
+/*    .site-main-photo-item{*/
+/*        width: 50%;*/
+/*    }*/
+/*}*/
+
+
+.entry-title{
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    bottom: 0;
+    margin: 0;
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, .6));
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, .6));
+    background: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, .6));
+    padding: 3rem 2rem 1.5rem;
+    line-height: 1.2em;
+    color: #f5f5f5;
+    font-weight: 500;
+    font-size: 20px;
+    text-transform: none;
+    text-align: left;
+    text-shadow: 0 0 10px rgb(0 0 0 / 60%);
+    opacity: 1;
+}
+
+.site-img{
+    width: auto;
+    max-height: 100%;
+}

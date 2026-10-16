@@ -1,0 +1,64 @@
+Table	Create Table
+blog_table	CREATE TABLE `blog_table` (
+  `id` bigint(20) NOT NULL,
+  `recommend` bit(1) NOT NULL,
+  `blog_pic` varchar(255) DEFAULT NULL,
+  `comment_able` bit(1) NOT NULL,
+  `content` longtext,
+  `create_time` datetime(6) DEFAULT NULL,
+  `publish` bit(1) NOT NULL,
+  `share_statement` bit(1) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `update_time` datetime(6) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `type_id` bigint(20) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `flag` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKq8sl8c8b0m12oy74mh7e35i71` (`type_id`),
+  KEY `FKmmustfwv66xux1hckl6rl3t7k` (`user_id`),
+  CONSTRAINT `FKmmustfwv66xux1hckl6rl3t7k` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FKq8sl8c8b0m12oy74mh7e35i71` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+Table	Create Table
+blog_table_tags	CREATE TABLE `blog_table_tags` (
+  `blogs_id` bigint(20) NOT NULL,
+  `tags_id` bigint(20) NOT NULL,
+  KEY `FKlis49yawe8vso5gao0yxkyjf1` (`tags_id`),
+  KEY `FK754l9pre0t2ogrf0q2qd280tj` (`blogs_id`),
+  CONSTRAINT `FK754l9pre0t2ogrf0q2qd280tj` FOREIGN KEY (`blogs_id`) REFERENCES `blog_table` (`id`),
+  CONSTRAINT `FKlis49yawe8vso5gao0yxkyjf1` FOREIGN KEY (`tags_id`) REFERENCES `tag` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+Table	Create Table
+comment	CREATE TABLE `comment` (
+  `id` bigint(20) NOT NULL,
+  `content` longtext,
+  `create_time` datetime(6) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `blog_id` bigint(20) DEFAULT NULL,
+  `parent_comment_id` bigint(20) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `admin_comment` bit(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKrgos7cn4fnlws46dmb8u6mld8` (`blog_id`),
+  KEY `FKhvh0e2ybgg16bpu229a5teje7` (`parent_comment_id`),
+  CONSTRAINT `FKhvh0e2ybgg16bpu229a5teje7` FOREIGN KEY (`parent_comment_id`) REFERENCES `comment` (`id`),
+  CONSTRAINT `FKrgos7cn4fnlws46dmb8u6mld8` FOREIGN KEY (`blog_id`) REFERENCES `blog_table` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+Table	Create Table
+message	CREATE TABLE `message` (
+  `id` bigint(20) NOT NULL,
+  `admin_message` bit(1) NOT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `content` longtext,
+  `create_time` datetime(6) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `parent_message_id` bigint(20) DEFAULT NULL,
+  `message_type` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKt4gjpvxlwdkb0tonr9pd5ftw1` (`parent_message_id`),
+  CONSTRAINT `FKt4gjpvxlwdkb0tonr9pd5ftw1` FOREIGN KEY (`parent_message_id`) REFERENCES `message` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

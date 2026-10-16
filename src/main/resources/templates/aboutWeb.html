@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="关于十二的个人网站信息">
+    <meta name="keyword" content="十二,十二的个人网站, 关于本站">
+    <meta name="author" content="十二, Alex">
+    <title>关于本站</title>
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/css/footer.css" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" href="../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../static/css/about.css" th:href="@{/css/aboutWeb.css}">
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+</head>
+
+<body>
+
+  <div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+    <div class="item" align="center">
+        <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+    </div>
+    <div class="item attached">
+        <div class="mobile_post_data">
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Articles</div>
+                        <div class="length_num">10</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Tags</div>
+                        <div class="length_num">2</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Categories</div>
+                        <div class="length_num">6</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="item site-icon" href="home.html">
+        <span><i class="home icon"></i>首页</span>
+    </a>
+    <a class="item site-icon" href="archive.html">
+        <span><i class="box icon"></i>归档</span>
+    </a>
+    <a class="item site-icon" href="types.html">
+        <span><i class="tags icon"></i>分类</span>
+    </a>
+    <a class="item site-icon" href="message.html">
+        <span><i class="comment icon"></i>留言</span>
+    </a>
+    <a class="item site-icon" href="friend-links.html">
+        <span><i class="user plus icon"></i>友链</span>
+    </a>
+    <a href="about.html" class="item site-icon" >
+        <span><i class="user icon"></i>关于 我</span>
+    </a>
+    <a href="aboutWeb.html" class="item site-icon" >
+        <span><i class="laptop icon"></i>关于 网站</span>
+    </a>
+</div>
+
+  <!--SEARCH-->
+  <div th:replace="fragments :: search" class="ui fullscreen modal" id="search">
+      <i class="large m-white close icon"></i>
+      <div class="ui container">
+          <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+              <div class="ui large search">
+                  <div class="ui icon input">
+                      <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+                      <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+                  </div>
+                  <div class="results"></div>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- 加载动画 -->
+  <div th:replace="fragments :: loading-animate" class="loader-wrapper">
+      <img src="../static/images/loading.gif">
+  </div>
+
+  <div class="pusher">
+      <canvas id="c" style="position: fixed; z-index: -1;"></canvas>
+        
+        <div th:replace="fragments :: header(~{::h1})" id="header">
+          <!-- 导航栏 -->
+          <nav class="m-shadow-header" id="nav">
+    
+            <div class="ui stackable grid">
+    
+              <div class="four wide column" align="center" >
+                <div class="site-top" id="nav-logo">
+                  <div class="site-logo">
+                    <span class="site-logo-title m-mobile-site-logo-title">
+                      <a href="home.html" alt="十二" class="">
+                        <span class="sakuraso">十二</span>
+                        <span class="no">の</span>
+                        <span class="shironeko">世界</span>
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="eight wide column m-mobile-hide" align="center">
+                <div id="nav-menu">
+                  <div class="ui inverted stackable secondary menu">
+                    <a href="home.html" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                    <a href="archive.html" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+                    <a href="types.html" class="item  shake"><i class="tags icon"></i>分类</a> 
+                    <a href="message.html" class="item pulse"><i class="comment icon"></i>留言</a>
+                    <a href="friend-links.html" class="item  tada"><i class="user plus icon"></i>友链</a> 
+                    <a href="picture.html" class="item  swing"><i class="music icon"></i>音乐</a>
+                    <div class="item">
+                          <div class="ui dropdown">
+                            <div class="text">
+                              关于
+                            </div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                              <a href="about.html" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>
+                              <a href="aboutWeb.html" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>
+                            </div>
+                          </div>
+                    </div>    
+                    <div class="left item">
+                      <div class="ui dropdown">
+                                        <i class="large search link icon"></i>
+                                        <div class="menu">
+                                          <div class="ui icon search input">
+                                            <i class="search icon"></i>
+                                            <input type="text" placeholder="Search tags...">
+                                          </div>
+                                          <div class="divider"></div>
+                                          <div class="header">
+                                            <i class="tags icon"></i>
+                                            Tag Label
+                                          </div>
+                                          <div class="scrolling menu">
+                                            <div class="item">
+                                              <div class="ui blue empty circular label"></div>
+                                              Programing
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui teal empty circular label"></div>
+                                              Daily lives
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui orange empty circular label"></div>
+                                              Study
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui violet empty circular label"></div>
+                                              Game
+                                            </div>
+                                            <div class="item">
+                                              <div class="ui red empty circular label"></div>
+                                              pytorch
+                                            </div>
+                                          </div>
+                                        </div>
+                      </div>
+                    </div>   
+                  </div>
+                </div>
+              </div>  
+    
+              <div class="four wide column m-mobile-hide" align="center">
+                <div id="login">
+                  <a href="admin/login.html" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+                </div>
+              </div>
+          </div>
+    
+            <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+              <i class="sidebar icon"></i>
+            </a>
+          </nav>
+    
+          <header id="page-header" class="header-image">
+            <div id="site-info">
+              <h1 id="site-title">网站</h1>
+              <div id="site-subtitle">
+                <span id="subtitle"></span>
+                <span class="typed-cursor"></span>
+              </div>
+            </div>
+    
+            <div class="scroll-down-bar">
+                <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+            </div>
+    
+          </header>
+        </div> 
+
+        <!-- 网站介绍 -->
+        <div id="main">
+            <div class="ui m-container instruction m-opacity">
+                <div class="ui segment">
+                    <h2>关于本站</h2>
+                    <div class="ui">
+                        <p class="Instruction-of-Website">
+                            本站于2021年11月10号开始着手准备。最开始的初衷只是单纯觉得自己上了“软件工程实践”这门课，可以有能力来做一下网站了。
+                            同时可以锻炼自己的全栈开发的能力。
+                        </p>
+                        <p class="Instruction-of-Website">
+                            说实话，自己着手搭建这个网站还是比较迷茫的。对于自己的页面设计和功能设计完全没有清楚的思路，只是觉得要有这个功能或者说别人有我也要有的。
+                            一开始真的无从下手，自己只有零零散散的想法，自己想做的东西又有很多。
+                            但是觉得自己与其在哪空想还不如直接开始动手开始先写代码来的直接。
+                            以后想到啥补啥╮(￣▽ ￣)╭
+                        </p>
+                        <p class="Instruction-of-Website">
+                            开始的时候，从GitHub上看了很多炫酷的网站。但自己想要一个简简单单的网站，满足一下自己的需求就好了。所以简单最好(*+﹏+*)~@！
+                            <br>
+                            但是搞IT的都是“搬运工”，不可能不去参考借鉴的（至少我不能囧）所以还是或多或少参考了其他人的网站
+                        </p>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+        <!-- idiom卡片 -->
+        <div class="ui container idiom" align="center">
+            <div class="ui shape m-opacity">
+                <div class="sides m-shadow-small">
+
+                    <div class="side ui flip-over" >
+                        <div class="ui bg-im-box idiom" id="bg-i10">
+                            <p>《等待放假》最佳主演<i class="user icon"></i></p>
+                            <p>十二</p>
+                        </div>
+                    </div>
+
+                    <div class="active side ui flip-over" >
+                        <div class="ui bg-im-box idiom" id="bg-i3">
+                            <p>Good morning, and in case I don't see you, good afternoon, good evening, and good night!</p>
+                            <p>Truman</p>
+                        </div>
+                    </div>
+
+                    <div class="side ui flip-over" >
+                        <div class="ui bg-im-box idiom" id="bg-i7">
+                            <p>Rome was not built in a day.</p>
+                            <p>Roman</p>
+                        </div>
+                    </div>
+
+                    <div class="side ui flip-over" >
+                    <div class="ui bg-im-box idiom" id="bg-i2">
+                            <p>If I have seen further, it is by standing on the shoulders of giants.</p>
+                            <p>Issac Newton</p>
+                        </div>
+                    </div>
+
+                    <div class="side ui flip-over" >
+                        <div class="ui bg-im-box idiom" id="bg-i6">
+                            <p>愿你始终是少年敢笑敢言</p>
+                            <p>Alex</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <!--底部栏-->
+      <footer th:replace="fragments :: footer">
+          <div id="footer"></div>
+          <div class="banner">
+              <div class="view">
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                          class="morning"
+                  />
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                          class="afternoon"
+                  />
+                  <img
+                          src="../static/images/bilibili-tree/snow.png"
+                          class="ball"
+                  />
+                  <video autoplay loop muted class="evening">
+                      <source
+                              src="../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                              type="video/webm"
+                      />
+                  </video>
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                          class="window-cover"
+                  />
+              </div>
+              <div class="tree">
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                          class="morning"
+                  />
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                          class="afternoon"
+                  />
+                  <img
+                          src="../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                          class="evening"
+                  />
+              </div>
+          </div>
+      </footer>
+
+      <!-- backTop --> 
+      <div class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+  </div>
+
+  <!--/*/<th:block th:replace="fragments :: page-script">/*/-->
+  <!--/*/</th:block>/*/-->
+
+    <Script>
+      var subtitleEffect = true
+      if (subtitleEffect) { 
+      var typed = new Typed("#subtitle", {
+        strings: "罗马不是一日建成的".split(","),
+        startDelay: 300,
+        typeSpeed: 150,
+        // loop: true,
+        backSpeed: 50
+      })
+      } else {
+        document.getElementById("subtitle").innerHTML = '愿始终是少年敢笑敢言'
+      }
+    </Script>
+    <!-- idiom -->
+    <script>
+      // 小卡片
+      $('.shape').shape();    
+      $('.ui.flip-over').click(function(){
+          $('.shape').shape('flip over');
+      })
+    </script>
+</body>
+</html>

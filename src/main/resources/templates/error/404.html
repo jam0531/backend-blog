@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404</title>
+  <link href="../../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="../../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+</head>
+
+<body style="background-color: black">
+
+    <div class="ui container" style="height: 100%;width: 100%;display: flex;align-items: center;justify-content: center;flex-direction: column">
+        <img src="../../static/images/404.jpg" th:src="@{/images/404.jpg}" alt="" class="ui image">
+        <div class="ui container" align="center">
+            <a href="../home.html" th:href="@{/}">
+                <div class="ui animated button black" tabindex="0">
+                    <div class="visible content">返回首页</div>
+                    <div class="hidden content">
+                        <i class="home icon"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+<!--    <footer class="ui vertical raised segment m-padded-tb-massive m-opacity" >-->
+<!--    &lt;!&ndash;容器&ndash;&gt;-->
+<!--    <div class="ui center aligned container">-->
+<!--        <div class="ui divided stackable grid">-->
+<!--            <div class="four wide column">-->
+<!--                <div style="font-size: large;font-weight: bold" class="ui m-text-thin m-text-spaced m-margin-top" >联系方式</div>-->
+<!--                <div class="ui link list">-->
+<!--                    <div href="#" class="m-text-thin">QQ：1695465925</div>-->
+<!--                    <div href="#" class="m-text-thin">Email：1695465925@qq.com</div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="four wide column" >-->
+<!--                <div class="ui list">-->
+<!--                    <div class="item">-->
+<!--                        <div style="font-size: large;font-weight: bold" class="ui m-text-thin m-text-spaced m-margin-top" >网站作者</div>-->
+<!--                    </div>-->
+<!--                    <div id="blog-message">-->
+<!--                        <div class="ui list">-->
+<!--                            <div class="ui item">十二</div>-->
+<!--                            <div class="ui item">Alex</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="four wide column">-->
+<!--                <div class="ui  list">-->
+<!--                    <div class="item">-->
+<!--                        <div style="font-size: large;font-weight: bold" class="ui m-text-thin m-text-spaced m-margin-top " >网站构建</div>-->
+<!--                    </div>-->
+<!--                    <div id="blog-message">-->
+<!--                        <div class="ui list">-->
+<!--                            <a class="ui item" href="https://semantic-ui.com" target="_blank">Semantic-ui</a>-->
+<!--                            <a class="ui item" href="https://spring.io/projects/spring-boot" target="_blank">Spring Boot</a>-->
+<!--                            <a class="ui item" href="https://www.mysql.com" target="_blank">MySQL数据库</a>-->
+<!--                        </div>                -->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="four wide column">-->
+<!--                <div style="font-size: large;font-weight: bold" class="ui m-text-thin m-text-spaced m-margin-top">网站信息</div>-->
+<!--                &lt;!&ndash;<p id="htmer_time" class="item m-text-thin"></p>&ndash;&gt;-->
+<!--                <div id="blog-message">-->
+<!--                    <div class="ui inverted link list" style="align-content: center;margin-top: 10px">-->
+<!--                       <div class="m-text-thin" style="text-align: center;">-->
+<!--                            文章总数： <h2 class="ui blue header m-inline-block m-margin-top-null" style="font-size:medium;"> 0 </h2> 篇-->
+<!--                        </div>-->
+<!--                        <div class="m-text-thin" style="text-align: center;">-->
+<!--                            访问总数： <h2 class="ui blue header m-inline-block m-margin-top-null" style="font-size:medium;"> 0 </h2> 次-->
+<!--                        </div>-->
+<!--                        <div class="m-text-thin" style="text-align: center;">-->
+<!--                            评论总数： <h2 class="ui blue header m-inline-block m-margin-top-null" style="font-size:medium;"> 0 </h2> 条-->
+<!--                        </div>-->
+<!--                        <div class="m-text-thin" style="text-align: center;">-->
+<!--                            留言总数： <h2 class="ui blue header m-inline-block m-margin-top-null" style="font-size:medium;"> 0 </h2> 条-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="ui inverted section divider"></div>-->
+<!--        <div style="color: #F08047;margin-top: -18px" class="ui inverted m-text-thin m-text-spaced">博客已运行：<span id="htmer_time" class="item m-text-thin"></span> </div>-->
+<!--    </div>-->
+<!--    </div>-->
+<!--  </footer>-->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+    <script src="../../static/js/cal_time.js" th:src="@{/js/cal_time.js}"></script>
+    <script src="../../static/js/font.js" th:src="@{/js/font.js}"></script>
+</body>
+</html>

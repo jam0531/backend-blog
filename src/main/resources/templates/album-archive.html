@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图集</title>
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../static/css/album.css" th:href="@{/css/album.css}">
+    <link href="../static/lib/magnific-popup/magnific-popup.css" th:href="@{/lib/magnific-popup/magnific-popup.css}" rel="stylesheet">
+
+</head>
+<body>
+    <div class="site-wrapper">
+        <div class="site" style="min-height: 0px;">
+            <header class="site-header">
+                <div class="album-site-logo">
+                    <a th:href="@{/home}">
+                        <img th:src="@{https://cdn.jsdelivr.net/gh/jam0531/blogPic/202204072311645.png}" src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/202204072311645.png" alt="">
+                    </a>
+                </div>
+                <div class="site-name">
+                    <a th:href="@{/album}">
+                        <text>十二のアルバム</text>
+                    </a>
+                </div>
+                <div class="site-time-list">
+                    <div class="site-time-list-item" style="font-weight: bolder;color: gray">Time List</div>
+                    <ul class="site-time-list-item" th:each="item : ${archivePic}" >
+                        <a th:href="@{/albumArchive/{date}(date=${item.key})}" href="#" th:text="${item.key}">2021-4-17</a>
+                    </ul>
+                </div>
+            </header>
+            <div class="site-main" style="min-height: 100vh">
+                <div class="site-main-instrutor">
+                    <text th:text="| ${date} に収集された壁紙 |"></text>
+                </div>
+                <div class="site-main-photolist" th:each="item : ${pictures}">
+                    <div class="site-main-photo-item" th:each="pic : ${item.value}" th:href="@{${pic.piclink}}">
+                        <a>
+                            <img class="site-img lazyloaded" data-original="@{${pic.piclink}}" height="200" width="350" th:src="@{${pic.piclink}}" src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/202204081907986.png" alt="" >
+                            <h2 class="entry-title" th:text="${pic.picDescription}">占着茅坑不拉屎</h2>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#menu-show').click(function(){
+            $('.ui.sidebar')
+                .sidebar('setting', 'transition', 'overlay')
+                .sidebar('toggle');
+        })
+    </script>
+    <script src="../static/js/lazyload.js" th:src="@{/js/lazyload.js}"></script>
+    <script>
+        $('img.lazyloaded').lazyload({
+            // placeholder:'../static/images/loading.gif'
+            placeholder:'[[@{/images/loading.gif}]]'
+        });
+    </script>
+    <script src="../static/lib/magnific-popup/magnific-popup.js" th:src="@{/lib/magnific-popup/magnific-popup.js}"></script>
+    <script>
+    $(function(){
+        $('.site-main-photolist').magnificPopup({
+            delegate: 'div',
+            type: 'image',
+            removalDelay: 300,
+            titleSrc: 'title',
+            preloader: true,
+            showCloseBtn:false,
+            fixedBgPos:false,
+            fixedContentPos:false,
+            gallery:{
+                enabled:true
+            },
+            zoom: {
+                enabled: true, // By default it's false, so don't forget to enable it
+                duration: 300, // duration of the effect, in milliseconds
+                easing: 'ease-in-out', // CSS transition easing function
+            }
+        });
+    });
+</script>
+</body>
+</html>

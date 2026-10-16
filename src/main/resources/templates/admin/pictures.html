@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>相册管理</title>
+  <link href="../../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+
+  <link rel="stylesheet" href="../../static/css/picture.css" th:href="@{/css/picture.css}">
+  <link rel="stylesheet" href="../../static/css/animate.css" th:href="@{/css/animate.css}">
+  <link rel="stylesheet" href="../../static/css/public.css" th:href="@{/css/public.css}">
+  <link rel="stylesheet" href="../../static/css/footer.css" th:href="@{/css/footer.css}">
+  <link rel="stylesheet" href="../../static/css/header.css" th:href="@{/css/header.css}">
+  <link rel="stylesheet" href="../../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="../../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+</head>
+<body>
+
+<div th:replace="admin/_fragments :: loading-animate" class="loader-wrapper">
+    <img src="../../static/images/loading.gif">
+  </div>
+
+<div class="pusher">
+  <!--导航栏-->
+  <div th:replace="admin/_fragments :: header(~{::h1})" id="header">
+    <!-- 导航栏 -->
+    <nav class="m-shadow-header" id="nav">
+
+      <div class="ui stackable grid">
+
+        <div class="four wide column" align="center" >
+          <div class="site-top" id="nav-logo">
+            <div class="site-logo">
+                    <span class="site-logo-title m-mobile-site-logo-title">
+                      <a href="index.html" alt="十二" class="">
+                        <span class="sakuraso">十二</span>
+                        <span class="no">の</span>
+                        <span class="shironeko">世界</span>
+                      </a>
+                    </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eight wide column m-mobile-hide" align="center">
+          <div id="nav-menu">
+            <div class="ui inverted stackable secondary menu">
+              <a href="index.html" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+              <a href="#" class="item  rubberBand"><i class="paper plane icon"></i>博客</a>
+              <a href="#" class="item  shake"><i class="tags icon"></i>标签</a>
+              <a href="#" class="item pulse"><i class="list alternate outline icon"></i>分类</a>
+              <a href="#" class="item  tada"><i class="user plus icon"></i>友链</a>
+              <a href="#" class="item  swing"><i class="image icon"></i>图片</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="four wide column m-mobile-hide" align="center">
+          <div id="login">
+            <a href="admin/login.html" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+          </div>
+
+        </div>
+      </div>
+
+      <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+        <i class="sidebar icon"></i>
+      </a>
+    </nav>
+
+    <header id="page-header" class="header-image">
+      <div id="site-info">
+        <h1 id="site-title">图片管理</h1>
+        <div id="site-subtitle">
+          <span id="subtitle"></span>
+          <span class="typed-cursor"></span>
+        </div>
+      </div>
+
+      <div class="scroll-down-bar">
+        <i class="chevron down icon scroll-down-arrow"  style="margin-top: 3rem ;"></i>
+      </div>
+
+    </header>
+  </div>
+
+  <div id="main" class="ui m-container" style="display: block">
+    <div class="m-padded-top">
+    <div class="ui attached pointing menu">
+      <div class="ui container">
+        <div class="right menu">
+          <a href="pictures-input.html" th:href="@{/admin/pictures-input}" class="item">新增</a>
+          <a href="pictures.html" th:href="@{/admin/pictures}" class="teal active item">列表</a>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!--中间内容-->
+    <div >
+      <div class="ui container">
+        <!--消息提示-->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+          <i class="close icon"></i>
+          <div class="" th:text="${message}">提示：恭喜，操作成功！</div>
+        </div>
+        <table class="ui compact teal table">
+          <thead>
+            <tr align="center">
+              <th>ID</th>
+              <th>图片名称</th>
+              <th>时间</th>
+              <th>链接</th>
+              <th>描述</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr align="center" th:each="picture,iterStat : ${page.content}">
+              <td th:text="${iterStat.count}">1</td>
+              <td th:text="${picture.picName}">东西冲徒步</td>
+              <td th:text="${#dates.format(picture.createTime,'yyyy-MM-dd HH:mm')}">2019年12月31日</td>
+              <td th:text="${picture.piclink}">深圳</td>
+              <td th:text="${picture.picDescription}">深圳</td>
+              <td>
+                <a href="#" th:href="@{/admin/pictures/{id}/input(id=${picture.id})}" class="ui mini teal basic button">编辑</a>
+                <a href="#" th:href="@{/admin/pictures/{id}/delete(id=${picture.id})}" onclick="return confirm('确定要删除该照片吗？三思啊! 删了可就没了！')" class="ui mini red basic button">删除</a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="6" >
+                <div class="ui inverted divided stackable grid" th:if="${page.totalPages}>1">
+                  <div class="three wide column" align="center">
+                    <a class="ui center floated teal basic button" th:href="@{/admin/pictures(page=${page.number}-1)}" th:unless="${page.first}">上一页</a>
+                  </div>
+
+                  <div class="ten wide column" align="center" style="display: flex; align-items: center; justify-content: center">
+                    <p>第 <span th:text="${page.number+1}"></span> 页，共 <span th:text="${page.totalPages}"></span> 页，有 <span th:text="${page.numberOfElements}"></span> 个分类</p>
+                  </div>
+
+                  <div class="three wide column" align="center">
+                    <a class="ui center floated teal basic button" th:href="@{/admin/pictures(page=${page.number}+1)}" th:unless="${page.last}">下一页</a>
+                  </div>
+                </div>
+
+                <div align="center">
+                  <a href="#" th:href="@{/admin/pictures-input}">
+                    <button  type="button" class="ui teal button m-mobile-wide m-margin-top"><i class="pencil icon"></i>新增</button>
+                  </a>
+                </div>
+                <!--<a href="#" th:href="@{/admin/pictures/input}" class="ui mini right floated teal basic button">新增</a>-->
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <!--底部栏-->
+  <footer th:replace="admin/_fragments :: footer">
+    <div id="footer">
+      <div class="banner">
+        <div class="view">
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-view-1.43e982a.jpg"
+                  class="morning"
+          />
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-view-2.6a60e5a.jpg"
+                  class="afternoon"
+          />
+          <img
+                  src="../../static/images/bilibili-tree/snow.png"
+                  class="ball"
+          />
+          <video autoplay loop muted class="evening">
+            <source
+                    src="../../static/images/bilibili-tree/bilibili-winter-view-3.79f65a9.webm"
+                    type="video/webm"
+            />
+          </video>
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-view-3-snow.99d5ddb.png"
+                  class="window-cover"
+          />
+        </div>
+        <div class="tree">
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-tree-1.27fde75.png"
+                  class="morning"
+          />
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-tree-2.2d1e15b.png"
+                  class="afternoon"
+          />
+          <img
+                  src="../../static/images/bilibili-tree/bilibili-winter-tree-3.27ed304.png"
+                  class="evening"
+          />
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div th:replace="admin/_fragments :: backTop" class="back-to-top overelement" onclick="backTop()" id="backTop"></div>
+</div>
+
+
+
+<!--/*/<th:block th:replace="admin/_fragments :: page-script">/*/-->
+<!-- loading gif -->
+<script type="text/javascript">
+  $(window).on('load',function(){
+    $('.loader-wrapper').fadeOut("normal")
+  });
+</script>
+<!-- 页尾效果 -->
+<script src="../../static/js/footer.js" ></script>
+<script src="../../static/js/snow.js" ></script>
+<!-- 下拉栏 -->
+<script type="text/javascript">
+  $(".ui.dropdown").dropdown();
+</script>
+<!-- 移动端的菜单显示 -->
+<script>
+  $('#menu-show').click(function(){
+    $('.ui.sidebar')
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('toggle');
+  })
+</script>
+<!-- 点击出现文字效果 -->
+<script src="../../static/js/font.js" ></script>
+<!-- scroll-down-bar的js实现 -->
+<script src="../../static/js/Scroll.js" ></script>
+<!-- live2d模型 -->
+<script src="../../static/live2dw/lib/L2Dwidget.min.js" ></script>
+<script>
+  L2Dwidget.init({
+    "model":{jsonPath:"../static/live2dw/assets/asuna_04.model.json"},
+    "display":{"position":"right","width":140,"height":240},
+    "mobile":{"show":false},
+    "log":false,
+    "pluginJsPath":"../static/live2dw/lib/",
+    "pluginModelPath":"../static/live2dw/assets/",
+    "pluginRootPath":"../static/live2dw/",
+    "tagMode":false
+  })
+</script>
+<!-- 进入网页的特效 -->
+<script>
+  $('#nav')
+          .transition({
+            animation  : 'fade in',
+            duration   : '1.75s',
+          });
+  $('.scroll-down-bar')
+          .transition({
+            animation  : 'fade down in',
+            duration   : '1.25s',
+          });
+
+  $('#site-info')
+          .transition({
+            animation: 'fade in',
+            duration : '1.75s'
+          })
+</script>
+<!-- 滚动条下滑的导航栏出现隐藏 -->
+<script src="../../static/js/head.js" ></script>
+<script>
+  (function () {
+    var header = document.querySelector("#nav");
+
+    var headroom = new Headroom(header, {
+      offset: 60,
+      tolerance: 0,
+      classes: {
+        initial: "headroom",
+        pinned: "headroom--pinned",
+        unpinned: "headroom--unpinned",
+        top:"headroom--top"
+
+      }
+    });
+    headroom.init();
+
+  })();
+</script>
+<!-- 打字机效果 -->
+<script src="../../static/lib/typed/typed.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+  $(".message .close").on('click',function (){
+    $(this).closest('.message')
+            .transition("fade");
+  });
+</script>
+
+
+</body>
+</html>

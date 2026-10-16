@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="关于十二的个人网站信息">
+    <meta name="keyword" content="十二,十二的个人网站, 关于本站">
+    <meta name="author" content="十二, Alex">
+    <title>关于本站</title>
+    <link href="../static/images/twelve.jpg" th:href="@{/images/twelve.jpg}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="../static/css/public.css" th:href="@{/css/public.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/css/header.css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" href="../static/css/about.css" th:href="@{/css/about.css}">
+    <link rel="stylesheet" href="../static/lib/semantic/semantic.min.css" th:href="@{/lib/semantic/semantic.min.css}">
+    <link rel="stylesheet" href="../static/lib/swiper/swiper-bundle.min.css" th:href="@{/lib/swiper/swiper-bundle.min.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="../static/lib/semantic/semantic.min.js" th:src="@{/lib/semantic/semantic.min.js}"></script>
+
+</head>
+
+<body>
+
+<div th:replace="fragments :: mobile-sidebar" class="ui right sidebar vertical menu m-mobile-show" id="mobile-sidebar" style="width: 250px; ">
+    <div class="item" align="center">
+        <img src="../static/images/twelve.jpg" alt="" class="ui bordered circular image" style="width: 120px;height: 120px;">
+    </div>
+    <div class="item attached">
+        <div class="mobile_post_data">
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Articles</div>
+                        <div class="length_num">10</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Tags</div>
+                        <div class="length_num">2</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mobile_data_item is-center">
+                <div class="mobile_data_link">
+                    <a href="#">
+                        <div class="headline">Categories</div>
+                        <div class="length_num">6</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="item site-icon" href="home.html">
+        <span><i class="home icon"></i>首页</span>
+    </a>
+    <a class="item site-icon" href="archive.html">
+        <span><i class="box icon"></i>归档</span>
+    </a>
+    <a class="item site-icon" href="types.html">
+        <span><i class="tags icon"></i>分类</span>
+    </a>
+    <a class="item site-icon" href="message.html">
+        <span><i class="comment icon"></i>留言</span>
+    </a>
+    <a class="item site-icon" href="friend-links.html">
+        <span><i class="user plus icon"></i>友链</span>
+    </a>
+    <a href="about.html" class="item site-icon" >
+        <span><i class="user icon"></i>关于 我</span>
+    </a>
+    <a href="aboutWeb.html" class="item site-icon" >
+        <span><i class="laptop icon"></i>关于 网站</span>
+    </a>
+</div>
+
+<!--SEARCH-->
+<div th:replace="fragments :: search" class="ui fullscreen modal" id="search">
+    <i class="large m-white close icon"></i>
+    <div class="ui container">
+        <form action="#" name="search" target="_blank" th:action="@{/search}" th:method="post" method="post">
+            <div class="ui large search">
+                <div class="ui icon input">
+                    <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+                    <input class="prompt" name="query" th:value="${query}" type="text" placeholder="SEARCH...">
+                </div>
+                <div class="results"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 加载动画 -->
+<div th:replace="fragments :: loading-animate" class="loader-wrapper">
+    <img src="../static/images/loading.gif">
+</div>
+
+<div>
+    <div id="header">
+        <!-- 导航栏 -->
+        <nav class="m-shadow-header" id="nav">
+
+            <div class="ui stackable grid">
+                <div class="four wide column" align="center" >
+                    <div class="site-top" id="nav-logo">
+                        <div class="site-logo">
+                  <span class="site-logo-title m-mobile-site-logo-title">
+                    <a href="home.html" th:href="@{/home}" alt="十二" class="">
+                      <span class="sakuraso">十二</span>
+                      <span class="no">の</span>
+                      <span class="shironeko">世界</span>
+                    </a>
+                  </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eight wide column m-mobile-hide" align="center" id="nav-middle">
+                    <div id="nav-menu">
+                        <div class="ui inverted stackable secondary menu">
+                            <a href="home.html" th:href="@{/home}" class="item  wobble"><i class="home icon m-mobile-hide"></i>首页</a>
+                            <a href="types.html" th:href="@{/types}" class="item  shake"><i class="tags icon"></i>分类</a>
+                            <a href="message.html" th:href="@{/message}" class="item pulse"><i class="comment icon"></i>留言</a>
+                            <a href="friend-links.html" th:href="@{/friend-links}" class="item  tada"><i class="user plus icon"></i>友链</a>
+                            <a href="archives.html" th:href="@{/archives}" class="item  rubberBand"><i class="archive icon"></i>归档</a>
+                            <a href="album.html" th:href="@{/album}" class="item swing"><i class="picture icon"></i>图片</a>
+                            <a href="about.html" th:href="@{/about}" class="item flash" ><i class="user icon m-mobile-hide"></i>关于</a>
+                            <!--                            <div class="item">-->
+                            <!--                                <div class="ui dropdown">-->
+                            <!--                                    <div class="text">-->
+                            <!--                                        关于-->
+                            <!--                                    </div>-->
+                            <!--                                    <i class="dropdown icon"></i>-->
+                            <!--                                    <div class="menu">-->
+                            <!--                                        <a href="about.html" th:href="@{/aboutme}" class="item flash" ><i class="user icon m-mobile-hide"></i>关于 我</a>-->
+                            <!--                                        <a href="aboutWeb.html" th:href="@{/aboutWeb}" class="item bounce" ><i class="laptop icon"></i>关于 网站</a>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="four wide column m-mobile-hide" id="nav-right">
+                    <!--login-->
+                    <div id="login">
+                        <a href="admin/login.html" th:href="@{/admin/login}" target="_blank" class="swing"><i class="m-white big user circle outline icon"></i></a>
+                    </div>
+                    <!--search-->
+                    <div class="ui search">
+                        <i class="m-white big sistrix link icon "></i>
+                    </div>
+
+                </div>
+            </div>
+
+            <a class="ui inverted icon button m-right-top m-mobile-show" id="menu-show">
+                <i class="sidebar icon"></i>
+            </a>
+        </nav>
+    </div>
+
+    <div class="swiper mySwiper swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
+        <div class="swiper-wrapper" id="swiper-wrapper-659a10358371f966a" aria-live="polite" style="transition-duration: 0ms;">
+            <div class="swiper-slide swiper-slide-prev" role="group" aria-label="1 / 4" style="opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+                <img src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/bluesky.jpg">
+            </div>
+            <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="2 / 4" style="opacity: 1; transform: translate3d(-1536px, 0px, 0px); transition-duration: 0ms;">
+                <img src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/cloud.jpg">
+            </div>
+            <div class="swiper-slide swiper-slide-next" role="group" aria-label="3 / 4" style="opacity: 0; transform: translate3d(-3072px, 0px, 0px); transition-duration: 0ms;">
+                <img src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/202204072110367.png">
+            </div>
+            <div class="swiper-slide" role="group" aria-label="4 / 4" style="opacity: 0; transform: translate3d(-4608px, 0px, 0px); transition-duration: 0ms;">
+                <img src="https://cdn.jsdelivr.net/gh/jam0531/blogPic/bluesky2.jpg">
+            </div>
+        </div>
+        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-659a10358371f966a" aria-disabled="false"></div>
+        <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-659a10358371f966a" aria-disabled="false"></div>
+        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 2" aria-current="true"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4"></span></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        <div class="swiper-title">
+            <span>About Alex's</span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="center instruction">
+            <span class="headline">INSTRUCTION</span>
+            <div class="displayBox">
+                <div class="displayPic">
+                    <img src="" alt="">
+                </div>
+                <div class="self-instruction">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--弹出层-->
+<script type="text/javascript" th:inline="javascript">
+    $('.ui.search').click(function (){
+        $('.fullscreen.modal').modal('show');
+    })
+</script>
+<!-- loading gif -->
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('.loader-wrapper').fadeOut("normal")
+    });
+</script>
+<!-- 移动端的菜单显示 -->
+<script>
+    $('#menu-show').click(function(){
+        $('.ui.sidebar')
+            .sidebar('setting', 'transition', 'overlay')
+            .sidebar('toggle');
+    })
+</script>
+<script>
+    $('#nav')
+        .transition({
+            animation  : 'fade in',
+            duration   : '1.75s',
+        });
+</script>
+<!-- 点击出现文字效果 -->
+<script src="../static/js/font.js" th:src="@{/js/font.js}"></script>
+<!-- 滚动条下滑的导航栏出现隐藏 -->
+<script src="../static/js/head.js" th:src="@{/js/head.js}"></script>
+<script>
+    (function () {
+        var header = document.querySelector("#nav");
+
+        var headroom = new Headroom(header, {
+            offset: 60,
+            tolerance: 0,
+            classes: {
+                initial: "headroom",
+                pinned: "headroom--pinned",
+                unpinned: "headroom--unpinned",
+                top:"headroom--top"
+
+            }
+        });
+        headroom.init();
+
+    })();
+</script>
+
+<script src="../static/lib/swiper/swiper-bundle.min.js" th:src="@{/lib/swiper/swiper-bundle.min.js}"></script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 30,
+        loop: true,
+        speed:2500,
+        autoplay: {
+            delay: 10000,
+            disableOnInteraction: true,
+            waitForTransition: false,
+        },
+        effect: "fade",
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+
+</script>
+
+</body>
+</html>

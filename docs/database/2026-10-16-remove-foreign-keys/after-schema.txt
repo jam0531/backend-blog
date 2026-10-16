@@ -1,0 +1,111 @@
+TABLE_NAME	TABLE_TYPE	ENGINE	TABLE_COLLATION
+blog_table	BASE TABLE	InnoDB	utf8mb4_general_ci
+blog_table_tags	BASE TABLE	InnoDB	utf8mb4_general_ci
+comment	BASE TABLE	InnoDB	utf8mb4_general_ci
+friendlink	BASE TABLE	InnoDB	utf8mb4_general_ci
+hibernate_sequence	BASE TABLE	InnoDB	utf8mb4_general_ci
+message	BASE TABLE	InnoDB	utf8mb4_general_ci
+notice	BASE TABLE	InnoDB	utf8mb4_general_ci
+picture	BASE TABLE	InnoDB	utf8mb4_general_ci
+tag	BASE TABLE	InnoDB	utf8mb4_general_ci
+type	BASE TABLE	InnoDB	utf8mb4_general_ci
+type_count	VIEW	NULL	NULL
+user	BASE TABLE	InnoDB	utf8_general_ci
+TABLE_NAME	COLUMN_NAME	ORDINAL_POSITION	COLUMN_TYPE	IS_NULLABLE	COLUMN_DEFAULT	COLUMN_KEY	EXTRA
+blog_table	id	1	bigint(20)	NO	NULL	PRI	
+blog_table	recommend	2	bit(1)	NO	NULL		
+blog_table	blog_pic	3	varchar(255)	YES	NULL		
+blog_table	comment_able	4	bit(1)	NO	NULL		
+blog_table	content	5	longtext	YES	NULL		
+blog_table	create_time	6	datetime(6)	YES	NULL		
+blog_table	publish	7	bit(1)	NO	NULL		
+blog_table	share_statement	8	bit(1)	NO	NULL		
+blog_table	title	9	varchar(255)	YES	NULL		
+blog_table	update_time	10	datetime(6)	YES	NULL		
+blog_table	views	11	int(11)	YES	NULL		
+blog_table	type_id	12	bigint(20)	YES	NULL	MUL	
+blog_table	user_id	13	bigint(20)	YES	NULL	MUL	
+blog_table	description	14	varchar(255)	YES	NULL		
+blog_table	flag	15	varchar(255)	YES	NULL		
+blog_table_tags	blogs_id	1	bigint(20)	NO	NULL	MUL	
+blog_table_tags	tags_id	2	bigint(20)	NO	NULL	MUL	
+comment	id	1	bigint(20)	NO	NULL	PRI	
+comment	content	2	longtext	YES	NULL		
+comment	create_time	3	datetime(6)	YES	NULL		
+comment	email	4	varchar(255)	YES	NULL		
+comment	blog_id	5	bigint(20)	YES	NULL	MUL	
+comment	parent_comment_id	6	bigint(20)	YES	NULL	MUL	
+comment	avatar	7	varchar(255)	YES	NULL		
+comment	nickname	8	varchar(255)	YES	NULL		
+comment	admin_comment	9	bit(1)	NO	NULL		
+friendlink	id	1	bigint(20)	NO	NULL	PRI	
+friendlink	time	2	datetime(6)	YES	NULL		
+friendlink	friendlink_address	3	varchar(255)	YES	NULL		
+friendlink	friendlink_avater	4	varchar(255)	YES	NULL		
+friendlink	friendlink_description	5	varchar(255)	YES	NULL		
+friendlink	friendlink_name	6	varchar(255)	YES	NULL		
+hibernate_sequence	next_val	1	bigint(20)	YES	NULL		
+message	id	1	bigint(20)	NO	NULL	PRI	
+message	admin_message	2	bit(1)	NO	NULL		
+message	avatar	3	varchar(255)	YES	NULL		
+message	content	4	longtext	YES	NULL		
+message	create_time	5	datetime(6)	YES	NULL		
+message	email	6	varchar(255)	YES	NULL		
+message	nickname	7	varchar(255)	YES	NULL		
+message	parent_message_id	8	bigint(20)	YES	NULL	MUL	
+message	message_type	9	int(11)	NO	NULL		
+notice	id	1	bigint(20)	NO	NULL	PRI	
+notice	content	2	varchar(255)	YES	NULL		
+notice	create_time	3	datetime(6)	YES	NULL		
+notice	update_time	4	datetime(6)	YES	NULL		
+picture	id	1	bigint(20)	NO	NULL	PRI	
+picture	create_time	2	datetime(6)	YES	NULL		
+picture	pic_description	3	varchar(255)	YES	NULL		
+picture	pic_name	4	varchar(255)	YES	NULL		
+picture	piclink	5	varchar(255)	YES	NULL		
+tag	id	1	bigint(20)	NO	NULL	PRI	
+tag	tag_name	2	varchar(255)	YES	NULL		
+type	id	1	bigint(20)	NO	NULL	PRI	
+type	type_name	2	varchar(255)	YES	NULL		
+type_count	type_id	1	bigint(20)	YES	NULL		
+type_count	count	2	bigint(21)	NO	0		
+user	id	1	bigint(20)	NO	NULL	PRI	
+user	aliasname	2	varchar(255)	YES	NULL		
+user	create_time	3	datetime(6)	YES	NULL		
+user	email	4	varchar(255)	YES	NULL		
+user	password	5	varchar(255)	YES	NULL		
+user	type	6	int(11)	YES	NULL		
+user	update_time	7	datetime(6)	YES	NULL		
+user	username	8	varchar(255)	YES	NULL		
+user	avatar	9	varchar(255)	YES	NULL		
+TABLE_NAME	INDEX_NAME	NON_UNIQUE	SEQ_IN_INDEX	COLUMN_NAME	INDEX_TYPE
+blog_table	FKmmustfwv66xux1hckl6rl3t7k	1	1	user_id	BTREE
+blog_table	FKq8sl8c8b0m12oy74mh7e35i71	1	1	type_id	BTREE
+blog_table	PRIMARY	0	1	id	BTREE
+blog_table_tags	FK754l9pre0t2ogrf0q2qd280tj	1	1	blogs_id	BTREE
+blog_table_tags	FKlis49yawe8vso5gao0yxkyjf1	1	1	tags_id	BTREE
+comment	FKhvh0e2ybgg16bpu229a5teje7	1	1	parent_comment_id	BTREE
+comment	FKrgos7cn4fnlws46dmb8u6mld8	1	1	blog_id	BTREE
+comment	PRIMARY	0	1	id	BTREE
+friendlink	PRIMARY	0	1	id	BTREE
+message	FKt4gjpvxlwdkb0tonr9pd5ftw1	1	1	parent_message_id	BTREE
+message	PRIMARY	0	1	id	BTREE
+notice	PRIMARY	0	1	id	BTREE
+picture	PRIMARY	0	1	id	BTREE
+tag	PRIMARY	0	1	id	BTREE
+type	PRIMARY	0	1	id	BTREE
+user	PRIMARY	0	1	id	BTREE
+TABLE_NAME	VIEW_DEFINITION
+type_count	select `blog`.`blog_table`.`type_id` AS `type_id`,count(0) AS `count` from `blog`.`blog_table` group by `blog`.`blog_table`.`type_id`
+table_name	row_count
+blog_table	10
+blog_table_tags	6
+comment	0
+friendlink	0
+hibernate_sequence	1
+message	0
+notice	0
+picture	5
+tag	6
+type	4
+user	1

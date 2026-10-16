@@ -1,0 +1,9 @@
+remaining_foreign_keys
+0
+incoming_or_outgoing_foreign_keys
+0
+articles_with_category_and_author
+10
+valid_blog_tag_links
+6
+Schema columns, indexes, views, and table row counts match the baseline.
