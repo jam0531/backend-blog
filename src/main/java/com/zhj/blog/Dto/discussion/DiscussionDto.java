@@ -21,7 +21,7 @@ public final class DiscussionDto {
     @Data @EqualsAndHashCode(callSuper = true)
     public static class Input extends ReplyInput {
         @NotBlank @Size(max = 255) private String nickname;
-        @NotBlank @Email @Size(max = 255) private String email;
+        @Email @Size(max = 255) private String email;
         @Min(1) private Long parentId;
     }
 

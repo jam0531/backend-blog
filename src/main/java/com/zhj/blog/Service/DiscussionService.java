@@ -106,7 +106,7 @@ public class DiscussionService {
         Comment comment = new Comment(); comment.setBlogId(blogId); comment.setParentCommentId(parentId);
         comment.setContent(content.trim()); boolean admin = isAdmin(user); comment.setAdminComment(admin);
         comment.setNickname(admin ? adminName(user) : nickname.trim());
-        comment.setEmail(admin ? user.getEmail() : email.trim()); comment.setAvatar(admin ? user.getAvatar() : null);
+        comment.setEmail(admin ? user.getEmail() : (email == null ? "" : email.trim())); comment.setAvatar(admin ? user.getAvatar() : null);
         comments.insert(comment); Item result = item(comment); result.setReplyTo(parent == null ? null : parent.getNickname()); return result;
     }
 
@@ -134,7 +134,7 @@ public class DiscussionService {
         Message message = new Message(); message.setMessageType(type); message.setParentMessageId(parentId);
         message.setContent(content.trim()); boolean admin = isAdmin(user); message.setAdminMessage(admin);
         message.setNickname(admin ? adminName(user) : nickname.trim());
-        message.setEmail(admin ? user.getEmail() : email.trim()); message.setAvatar(admin ? user.getAvatar() : null);
+        message.setEmail(admin ? user.getEmail() : (email == null ? "" : email.trim())); message.setAvatar(admin ? user.getAvatar() : null);
         messages.insert(message); Item result = item(message); result.setReplyTo(parent == null ? null : parent.getNickname()); return result;
     }
 

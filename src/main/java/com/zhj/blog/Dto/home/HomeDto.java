@@ -7,17 +7,16 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/** 首页聚合数据；图片和公告不存在时返回 null，其余集合返回空数组。 */
+/** 首页栏目聚合数据；公告不存在时返回 null，其余集合返回空数组。 */
 @Data
 public class HomeDto {
-    private BackgroundDto background;
     private NoticeDto notice;
-    private List<BlogSummaryDto> latestBlogs;
     private List<BlogSummaryDto> recommendedBlogs;
     private List<TypeCountDto> topTypes;
     private StatsDto stats;
     private List<ArchiveDto> archives;
 
+    /** 独立背景接口使用，不随首页栏目聚合返回。 */
     @Data
     @AllArgsConstructor
     public static class BackgroundDto {

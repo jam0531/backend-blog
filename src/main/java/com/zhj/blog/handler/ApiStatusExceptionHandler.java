@@ -37,6 +37,9 @@ public class ApiStatusExceptionHandler implements HandlerExceptionResolver {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             response.setHeader("Cache-Control", "no-store");
+            if (statusException.getRetryAfterSeconds() != null) {
+                response.setHeader("Retry-After", statusException.getRetryAfterSeconds().toString());
+            }
             objectMapper.writeValue(response.getWriter(), ApiResponse.error(
                     statusException.getStatus().value(), statusException.getMessage()));
             return new ModelAndView();

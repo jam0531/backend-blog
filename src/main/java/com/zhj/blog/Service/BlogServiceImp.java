@@ -22,7 +22,6 @@ import com.zhj.blog.Pojo.Blog;
 import com.zhj.blog.Pojo.Tag;
 import com.zhj.blog.Pojo.Type;
 import com.zhj.blog.Pojo.User;
-import com.zhj.blog.Pojo.Picture;
 import com.zhj.blog.Pojo.Notice;
 import com.zhj.blog.Utils.MarkdownUtils;
 import org.springframework.beans.BeanUtils;
@@ -53,9 +52,6 @@ public class BlogServiceImp extends ServiceImpl<BlogMapper, Blog> implements Blo
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private PictureService pictureService;
 
     @Autowired
     private NoticeService noticeService;
@@ -238,26 +234,14 @@ public class BlogServiceImp extends ServiceImpl<BlogMapper, Blog> implements Blo
     @Override
     public HomeDto getPublicHome() {
         HomeDto dto = new HomeDto();
-        Picture picture = pictureService.getRandomPic(1);
-        if (picture != null) {
-            dto.setBackground(new HomeDto.BackgroundDto(picture.getId().toString(),
-                    picture.getPicName(), picture.getPiclink()));
-        }
         Notice notice = noticeService.getLatestNotice();
         if (notice != null) {
             dto.setNotice(new HomeDto.NoticeDto(notice.getId().toString(),
                     notice.getContent(), notice.getCreateTime()));
         }
-        List<Blog> latest = mapper.selectList(publicSummaryQuery()
-                .orderByDesc("create_time", "id").last("LIMIT 5"));
         List<Blog> recommended = mapper.selectList(publicSummaryQuery().eq("recommend", 1)
                 .orderByDesc("create_time", "id").last("LIMIT 6"));
-        // 两组文章共用一次批量关联查询；不为每篇文章单独查作者、分类和标签。
-        List<Blog> blogs = new ArrayList<>(latest);
-        blogs.addAll(recommended);
-        populateRelations(blogs);
-        dto.setLatestBlogs(latest.stream().map(BlogSummaryDto::from).collect(Collectors.toList()));
-        dto.setRecommendedBlogs(recommended.stream().map(BlogSummaryDto::from).collect(Collectors.toList()));
+        dto.setRecommendedBlogs(toSummaries(recommended));
         dto.setTopTypes(typeMapper.selectPublishedTopTypes(5));
         dto.setStats(mapper.selectPublishedStats());
         dto.setArchives(mapper.selectPublishedArchives());

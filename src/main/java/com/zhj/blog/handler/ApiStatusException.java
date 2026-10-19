@@ -7,9 +7,15 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ApiStatusException extends RuntimeException {
     private final HttpStatus status;
+    private final Integer retryAfterSeconds;
 
     public ApiStatusException(HttpStatus status, String message) {
+        this(status, message, null);
+    }
+
+    public ApiStatusException(HttpStatus status, String message, Integer retryAfterSeconds) {
         super(message);
         this.status = status;
+        this.retryAfterSeconds = retryAfterSeconds;
     }
 }

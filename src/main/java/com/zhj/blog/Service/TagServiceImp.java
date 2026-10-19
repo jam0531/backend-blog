@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import com.zhj.blog.NotFoundException;
 import com.zhj.blog.handler.ApiStatusException;
 
-import java.util.List;
-
 /**
  * @author:zouhuajun
  * @date:2022/7/10 15:20
@@ -25,10 +23,5 @@ public class TagServiceImp extends ServiceImpl<TagMapper, Tag> implements TagSer
             throw new ApiStatusException(HttpStatus.CONFLICT, "该标签仍被文章使用，请先调整文章标签");
         }
         baseMapper.deleteById(id);
-    }
-
-    @Override
-    public List<Tag> TopTagList(Integer size) {
-        return null;
     }
 }

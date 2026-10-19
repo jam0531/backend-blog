@@ -7,9 +7,6 @@ import org.commonmark.ext.heading.anchor.HeadingAnchorExtension;
 import org.commonmark.node.Link;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.AttributeProvider;
-import org.commonmark.renderer.html.AttributeProviderContext;
-import org.commonmark.renderer.html.AttributeProviderFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 import java.util.*;
@@ -17,17 +14,9 @@ import java.util.*;
 
 public class MarkdownUtils {
 
-    /** 新 API 的正文渲染：保留 Markdown，原始 HTML 转义，过滤危险链接协议。 */
+    /** API 正文与后台预览共用安全渲染，数据库仍保存 Markdown 原文。 */
     public static String renderPublicContent(String markdown) {
-        List<Extension> extensions = Arrays.asList(TablesExtension.create(), HeadingAnchorExtension.create());
-        Node document = Parser.builder().extensions(extensions).build().parse(markdown == null ? "" : markdown);
-        return HtmlRenderer.builder().extensions(extensions).escapeHtml(true).sanitizeUrls(true)
-                .attributeProviderFactory(context -> (node, tagName, attributes) -> {
-                    if (node instanceof Link) {
-                        attributes.put("target", "_blank");
-                        attributes.put("rel", "noopener noreferrer");
-                    }
-                }).build().render(document);
+        return renderMarkdown(markdown, extendedSyntax(), false);
     }
 
     /**
@@ -36,10 +25,7 @@ public class MarkdownUtils {
      * @return
      */
     public static String markdownToHtml(String markdown) {
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
-        return renderer.render(document);
+        return renderMarkdown(markdown, Collections.emptyList(), false);
     }
 
     /**
@@ -49,40 +35,26 @@ public class MarkdownUtils {
      * @return
      */
     public static String markdownToHtmlExtensions(String markdown) {
-        //h标题生成id
-        Set<Extension> headingAnchorExtensions = Collections.singleton(HeadingAnchorExtension.create());
-        //转换table的HTML
-        List<Extension> tableExtension = Arrays.asList(TablesExtension.create());
-        Parser parser = Parser.builder()
-                .extensions(tableExtension)
-                .build();
-        Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder()
-                .extensions(headingAnchorExtensions)
-                .extensions(tableExtension)
-                .attributeProviderFactory(new AttributeProviderFactory() {
-                    public AttributeProvider create(AttributeProviderContext context) {
-                        return new CustomAttributeProvider();
-                    }
-                })
-                .build();
-        return renderer.render(document);
+        return renderMarkdown(markdown, extendedSyntax(), true);
     }
 
-    /**
-     * 处理标签的属性
-     */
-    static class CustomAttributeProvider implements AttributeProvider {
-        @Override
-        public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
-            //改变a标签的target属性为_blank
-            if (node instanceof Link) {
-                attributes.put("target", "_blank");
-            }
-            if (node instanceof TableBlock) {
-                attributes.put("class", "ui celled table");
-            }
-        }
+    private static List<Extension> extendedSyntax() {
+        return Arrays.asList(TablesExtension.create(), HeadingAnchorExtension.create());
+    }
+
+    /** 新旧入口使用相同的 HTML/链接安全规则，旧模板保留 Semantic UI 表格样式。 */
+    private static String renderMarkdown(String markdown, List<Extension> extensions, boolean legacyTableStyle) {
+        Node document = Parser.builder().extensions(extensions).build().parse(markdown == null ? "" : markdown);
+        return HtmlRenderer.builder().extensions(extensions).escapeHtml(true).sanitizeUrls(true)
+                .attributeProviderFactory(context -> (node, tagName, attributes) -> {
+                    if (node instanceof Link && !extensions.isEmpty()) {
+                        attributes.put("target", "_blank");
+                        attributes.put("rel", "noopener noreferrer");
+                    }
+                    if (legacyTableStyle && node instanceof TableBlock) {
+                        attributes.put("class", "ui celled table");
+                    }
+                }).build().render(document);
     }
 
 

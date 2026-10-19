@@ -39,10 +39,8 @@
 
 | 字段 | 内容 |
 |---|---|
-| background | 随机图片的 id、picName、piclink；无图片时为 null |
 | notice | 最新公告的 id、content、createTime；无公告时为 null |
-| latestBlogs | 最新 5 篇已发布文章摘要，create_time DESC、id DESC |
-| recommendedBlogs | 推荐的 6 篇已发布文章摘要，同上排序 |
+| recommendedBlogs | 最多 6 篇已发布推荐文章摘要，create_time DESC、id DESC |
 | topTypes | 最多 5 项：id、typeName、blogCount；已发布文章数量降序，同数量按分类 id 降序 |
 | stats | blogCount、typeCount、tagCount |
 | archives | year、blogCount 数组，年份降序 |
@@ -53,8 +51,14 @@
 - typeCount、tagCount 仅统计已发布文章实际关联、且仍存在的分类/标签，使用去重计数。
 - topTypes 不包含零篇已发布文章的分类，不依赖旧 type_count 视图。
 - archives 按已发布文章 create_time 年份分组，create_time 为空的历史记录不归入年份；因此年份数量之和可能小于 blogCount。
-- 统计使用数据库聚合，不加载文章正文；最新和推荐文章共用批量关联查询。
+- 统计使用数据库聚合，不加载文章正文；推荐文章共用批量关联查询，不为每篇文章单独查询作者、分类和标签。
 - 本接口不执行阅读量或其他写入。
+
+### 首页查询精简与发布兼容
+
+首页聚合不再查询或返回 `background`、`latestBlogs`。当前 Vue 首页仅使用上述五个字段，文章列表继续从 `/api/blogs` 分页获取；欢迎页继续调用独立 `/api/background`，其 `id`、`picName`、`piclink` 返回结构及无图片时的 null 保持不变。其他公开查询的已发布过滤、排序和字符串 ID 保持不变，旧 Thymeleaf 页面查询不受影响。
+
+当前前端兼容精简前后的后端，可以先发布前端、再发布后端。依赖已移除字段的历史前端不兼容新版 `/api/home`，不能在未更新前端和旧缓存的情况下单独升级后端；如需回滚到该历史前端，应先恢复保留旧字段的后端。这是两个字段的响应契约变更，不是仅在服务端跳过查询并返回空值。
 
 ## 异常处理范围
 

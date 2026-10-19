@@ -6,6 +6,7 @@ import com.zhj.blog.Dto.auth.SessionUserDto;
 import com.zhj.blog.Pojo.User;
 import com.zhj.blog.Service.UserService;
 import com.zhj.blog.interceptor.ApiSession;
+import com.zhj.blog.interceptor.LoginAttemptLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class AuthApiController {
     private final UserService userService;
     private final ApiSession sessions;
+    private final LoginAttemptLimiter loginAttempts;
 
     @ModelAttribute
     public void noCache(HttpServletResponse response) { response.setHeader("Cache-Control", "no-store"); }
@@ -32,7 +34,9 @@ public class AuthApiController {
 
     @PostMapping("/login")
     public ApiResponse<SessionUserDto> login(@Valid @RequestBody LoginRequest input, HttpServletRequest request) {
-        User user = userService.authenticateAdmin(input.getUsername(), input.getPassword());
+        // 只使用容器认定的客户端地址；不在业务代码中信任任意 X-Forwarded-For。
+        User user = loginAttempts.authenticate(request.getRemoteAddr(), input.getUsername(),
+                () -> userService.authenticateAdmin(input.getUsername(), input.getPassword()));
         request.changeSessionId();
         HttpSession session = request.getSession();
         session.setAttribute(ApiSession.USER_ID, user.getId());
